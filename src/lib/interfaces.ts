@@ -25,10 +25,15 @@ export interface Empresas {
     usuario : number;
     localNum : number;
 }
+export interface Fotos_Locales {
+    id : number;
+    imagen : string;
+}
 export interface Locales {
     id : number;
     usuario : User;
     direccion : string;
     categoria_culinaria : Categoria_Culinaria;
     empresa : Empresas;
+    fotos : Fotos_Locales[];
 }
