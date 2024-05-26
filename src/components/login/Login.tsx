@@ -1,21 +1,30 @@
 import axios from "axios";
 import { AuthResponse } from "@/lib/interfaces";
+
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import CountryCodeSelect from "@/components/login/CountryCodeSelect";
 import { Input } from "@/components/ui/input";
+
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 import styles from "./login.module.css";
+
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
     const baseUrl = "http://localhost:8000/api/";
     const [isSignUp, setIsSignUp] = useState(false);
     const [countryCode, setCountryCode] = useState("34");
+
+    const navigate = useNavigate();
 
     const phoneRegex = /\d{7,10}$/;
 
@@ -57,6 +66,7 @@ export default function Login() {
                 if (res.data.token) {
                     toast.success("¡Creación del usuario exitosa!");
                     localStorage.setItem("token", res.data.token);
+                    navigate("/")
                 }
             })
             .catch((err) => {
@@ -87,6 +97,7 @@ export default function Login() {
                 if (res.data.token) {
                     toast.success("¡Inicio de sesión exitoso!");
                     localStorage.setItem("token", res.data.token);
+                    navigate("/")
                 }
             })
             .catch((err) => {
