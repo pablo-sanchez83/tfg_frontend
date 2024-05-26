@@ -1,10 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 
-import App from './App.tsx'
-import Login from './components/login/Login'
 import GenericLayout from '@/assets/GenericLayout'
 import AccountLayout from '@/assets/AccountLayout'
+
+import Index from './components/Index/Index'
+import Login from './components/login/Login'
 
 import {
   createBrowserRouter,
@@ -15,7 +16,7 @@ import './index.css'
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <GenericLayout><App /></GenericLayout>,
+    element: <GenericLayout><Index /></GenericLayout>,
   },
   {
     path: "/account",
