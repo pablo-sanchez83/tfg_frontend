@@ -30,7 +30,7 @@ export default function Index() {
                         <Carousel className="w-full max-w-xs">
                             <CarouselContent>
                                 {local.fotos.map((foto) => (
-                                    <CarouselItem key={foto.id}><img src={"http://localhost:8000/" + foto.imagen} alt="Imagen del local" /></CarouselItem>
+                                    <CarouselItem key={foto.id}><img className="max-h-60" src={"http://localhost:8000/" + foto.imagen} alt="Imagen del local" /></CarouselItem>
                                 ))}
                             </CarouselContent>
                             <CarouselPrevious />
