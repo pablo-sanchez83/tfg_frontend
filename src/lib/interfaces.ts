@@ -9,6 +9,12 @@ export interface User {
     last_login: string | null;
 }
 
+export interface ContextoProps {
+    isLoggedIn: boolean;
+    login: (token: string) => void;
+    logout: () => void;
+}
+
 export interface AuthResponse {
     token: string;
     user: User;
@@ -31,6 +37,7 @@ export interface Fotos_Locales {
 }
 export interface Locales {
     id : number;
+    nombre : string;
     usuario : User;
     direccion : string;
     categoria_culinaria : Categoria_Culinaria;

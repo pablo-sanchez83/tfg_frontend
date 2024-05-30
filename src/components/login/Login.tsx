@@ -5,7 +5,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
@@ -19,12 +19,20 @@ import styles from "./login.module.css";
 
 import { useNavigate } from "react-router-dom";
 
+import { Contexto } from "@/components/Auth/AuthContext";
+
 export default function Login() {
     const baseUrl = "http://localhost:8000/api/";
     const [isSignUp, setIsSignUp] = useState(false);
     const [countryCode, setCountryCode] = useState("34");
-
     const navigate = useNavigate();
+    const context = useContext(Contexto);
+
+    if (!context) {
+        throw new Error("Contexto must be used within a Proveedor");
+    }
+
+    const { login } = context;
 
     const phoneRegex = /\d{7,10}$/;
 
@@ -65,13 +73,13 @@ export default function Login() {
             .then((res) => {
                 if (res.data.token) {
                     toast.success("¡Creación del usuario exitosa!");
-                    localStorage.setItem("token", res.data.token);
-                    navigate("/")
+                    login(res.data.token);
+                    navigate("/");
                 }
             })
             .catch((err) => {
                 toast.error("¡Creación del usuario fallida!");
-                console.log(err)
+                console.log(err);
             });
     }
 
@@ -96,13 +104,13 @@ export default function Login() {
             .then((res) => {
                 if (res.data.token) {
                     toast.success("¡Inicio de sesión exitoso!");
-                    localStorage.setItem("token", res.data.token);
-                    navigate("/")
+                    login(res.data.token);
+                    navigate("/");
                 }
             })
             .catch((err) => {
                 toast.error("¡Inicio de sesión fallido!");
-                console.log(err)
+                console.log(err);
             });
     };
 

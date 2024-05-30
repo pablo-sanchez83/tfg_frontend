@@ -12,6 +12,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import './index.css'
+import { Proveedor } from './components/Auth/AuthContext'
 
 const router = createBrowserRouter([
   {
@@ -22,11 +23,17 @@ const router = createBrowserRouter([
     path: "/account",
     element: <AccountLayout><Login /></AccountLayout>,
   },
+  {
+    path: "/about",
+    element: <GenericLayout><Index /></GenericLayout>,
+  }
 ])
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Proveedor>
+      <RouterProvider router={router} />
+    </Proveedor>
   </React.StrictMode>,
 )
