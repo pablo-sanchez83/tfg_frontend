@@ -9,15 +9,15 @@ import { useState, useContext } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import CountryCodeSelect from "@/components/login/CountryCodeSelect";
+import SelectorPrefijo from "@/components/account/SelectorPrefijo";
 import { Input } from "@/components/ui/input";
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import styles from "./login.module.css";
+import styles from "./cuentaEmpresa.module.css";
 
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { Contexto } from "@/components/Auth/AuthContext";
 
@@ -43,6 +43,7 @@ export default function Login() {
         password: z.string().max(50),
         confirm_password: z.string().max(50),
         rol: z.number(),
+        is_superuser: z.boolean()
     }).refine(data => data.password === data.confirm_password, {
         message: "Las contraseñas no coinciden",
         path: ["confirm_password"],
@@ -56,7 +57,8 @@ export default function Login() {
             tel: "",
             password: "",
             confirm_password: "",
-            rol: 2
+            rol: 4,
+            is_superuser: false
         },
     });
 
@@ -152,7 +154,7 @@ export default function Login() {
                                     )}
                                 />
                                 <div className="flex gap-1 items-center">
-                                    <CountryCodeSelect defaultValue={"34"} onValueChange={setCountryCode} />
+                                    <SelectorPrefijo defaultValue={"34"} onValueChange={setCountryCode} />
                                     <FormField
                                         control={signUpForm.control}
                                         name="tel"
@@ -241,12 +243,14 @@ export default function Login() {
                             <div className={`${styles['toggle-panel']} ${styles['toggle-left']}`}>
                                 <h1><b>¡Bienvenido de Nuevo!</b></h1>
                                 <p>Ingresa tus datos personales para usar todas las funciones del sitio</p>
-                                <Button className={isSignUp ? '' : 'hidden'} onClick={() => setIsSignUp(false)}>Iniciar Sesión</Button>
+                                <Button className={isSignUp ? '' : 'hidden'} onClick={() => { setIsSignUp(false) }}>Iniciar Sesión como empresa</Button>
+                                <Link to="/account" className={isSignUp ? '' : 'hidden'} onClick={() => { setIsSignUp(true) }}>Iniciar Sesión como persona</Link>
                             </div>
                             <div className={`${styles['toggle-panel']} ${styles['toggle-right']}`}>
                                 <h1><b>¡Hola, Amigo!</b></h1>
                                 <p>Regístrate con tus datos personales para usar todas las funciones del sitio</p>
-                                <Button className={isSignUp ? 'hidden' : ''} onClick={() => setIsSignUp(true)}>Registrarse</Button>
+                                <Button className={isSignUp ? 'hidden' : ''} onClick={() => setIsSignUp(true)}>Registrarse como empresa</Button>
+                                <Link to="/account" className={isSignUp ? 'hidden' : ''} onClick={() => { setIsSignUp(false) }}>Registrarse como persona</Link>
                             </div>
                         </div>
                     </div>

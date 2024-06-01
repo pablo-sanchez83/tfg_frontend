@@ -4,6 +4,7 @@ import { createContext, useState, useEffect, useCallback } from "react";
 export const Contexto = createContext<ContextoProps | undefined>(undefined)
 export const Proveedor = ({ children } : { children: React.ReactNode }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    
     const checkToken = useCallback(() => {
         const token = localStorage.getItem('token');
         setIsLoggedIn(!!token);

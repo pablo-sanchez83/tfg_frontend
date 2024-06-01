@@ -1,12 +1,12 @@
 import { FC } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-interface CountryCodeSelectProps {
+interface PropsSelectorPrefijo {
     defaultValue: string;
     onValueChange: (value: string) => void;
 }
 
-const CountryCodeSelect: FC<CountryCodeSelectProps> = ({ defaultValue, onValueChange }) => {
+const SelectorPrefijo: FC<PropsSelectorPrefijo> = ({ defaultValue, onValueChange }) => {
     return (
         <Select defaultValue={defaultValue} onValueChange={onValueChange}>
             <SelectTrigger className="w-2/3 p-3 mr-1 button-telephone">
@@ -231,4 +231,4 @@ const CountryCodeSelect: FC<CountryCodeSelectProps> = ({ defaultValue, onValueCh
     );
 };
 
-export default CountryCodeSelect;
+export default SelectorPrefijo;

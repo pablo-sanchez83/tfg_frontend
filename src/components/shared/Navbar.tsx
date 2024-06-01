@@ -25,10 +25,10 @@ const Navbar = () => {
   return (
     <nav className="bg-white border-gray-200 dark:bg-gray-900">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <a href="https://flowbite.com/" className="flex items-center space-x-3 rtl:space-x-reverse">
+        <Link to="/" className="flex items-center space-x-3 rtl:space-x-reverse">
           <MdiChefHat height={32} width={32} />
           <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Eatbook</span>
-        </a>
+        </Link>
         <button
           onClick={toggleMenu}
           type="button"
@@ -44,39 +44,27 @@ const Navbar = () => {
         <div className={`${isOpen ? 'block' : 'hidden'} w-full md:block md:w-auto`} id="navbar-default">
           <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
             <li>
-              <Link to="/" className={`block py-2 px-3 rounded md:p-0 ${isActive('/') ? 'text-[#e67e22] underline' : 'text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#e67e22] dark:text-white md:dark:hover:text-[#e67e22] dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'}`} aria-current="page">
-                Home
+              <Link to="/" className={`block py-2 px-3 rounded md:p-0 ${isActive('/') ? 'text-[#e67e22] underline' : 'text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#e67e22] dark:text-white md:dark:hover:text-[#e67e22] dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'}`}>
+                Inicio
               </Link>
             </li>
             <li>
-              <Link to="/about" className={`block py-2 px-3 rounded md:p-0 ${isActive('/about') ? 'text-[#e67e22] underline' : 'text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#e67e22] dark:text-white md:dark:hover:text-[#e67e22] dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'}`}>
-                About
+              <Link to="/perfil" className={`block py-2 px-3 rounded md:p-0 ${isActive('/perfil') ? 'text-[#e67e22] underline' : 'text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#e67e22] dark:text-white md:dark:hover:text-[#e67e22] dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'}`}>
+                Perfil
               </Link>
             </li>
-            <li>
-              <Link to="/services" className={`block py-2 px-3 rounded md:p-0 ${isActive('/services') ? 'text-[#e67e22] underline' : 'text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#e67e22] dark:text-white md:dark:hover:text-[#e67e22] dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'}`}>
-                Services
-              </Link>
-            </li>
-            <li>
-              <Link to="/pricing" className={`block py-2 px-3 rounded md:p-0 ${isActive('/pricing') ? 'text-[#e67e22] underline' : 'text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#e67e22] dark:text-white md:dark:hover:text-[#e67e22] dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'}`}>
-                Pricing
-              </Link>
-            </li>
-            <li>
-              <Link to="/contact" className={`block py-2 px-3 rounded md:p-0 ${isActive('/contact') ? 'text-[#e67e22] underline' : 'text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#e67e22] dark:text-white md:dark:hover:text-[#e67e22] dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'}`}>Contact</Link>
-            </li>
+            
             {isLoggedIn && (
               <li className="w-full md:w-auto">
-                <button onClick={logout} className="w-full block text-left py-2 px-3 text-white bg-red-600 rounded md:bg-transparent md:text-red-600 md:p-0 md:hover:text-[#e67e22] dark:text-white md:dark:hover:text-[#e67e22] dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
-                  <span className='flex gap-3'><LogOut /> Logout</span>
-                </button>
+                <Link to={"/"} onClick={logout} className="w-full block text-left py-2 px-3 text-white bg-red-600 rounded md:bg-transparent md:text-red-600 md:p-0 md:hover:text-[#e67e22] dark:text-white md:dark:hover:text-[#e67e22] dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
+                  <span className='flex gap-3'><LogOut /> Cerrar sesión</span>
+                </Link>
               </li>
             )}
             {!isLoggedIn && (
               <li>
                 <Link to="/account" className={`block py-2 px-3 rounded md:p-0 ${isActive('/account') ? 'text-[#e67e22] underline' : 'text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#e67e22] dark:text-white md:dark:hover:text-[#e67e22] dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'}`}>
-                  <span className='flex gap-3'><UserRound /> Cuenta</span>
+                  <span className='flex gap-3'><UserRound /> Gestionar cuenta</span>
                 </Link>
               </li>
             )}
