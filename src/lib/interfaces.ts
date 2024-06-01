@@ -101,3 +101,15 @@ export interface Locales {
     tramos_horarios: TramoHorario[];
     comentarios: Comentario[];
 }
+export interface Horario {
+    id: number;
+    hora_apertura: string;
+    hora_cierre: string;
+    L: boolean;
+    M: boolean;
+    X: boolean;
+    J: boolean;
+    V: boolean;
+    S: boolean;
+    D: boolean;
+}

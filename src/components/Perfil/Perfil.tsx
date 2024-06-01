@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { User } from "@/lib/interfaces";
 import AdminPerfil from "./AdminPerfil";
 import ClientePerfil from "./ClientePerfil";
+import EmpresarioPerfil from "./EmpresarioPerfil";
+import EncargadoPerfil from "./EncargadoPerfil";
 
 export default function Perfil() {
     const [perfil, setPerfil] = useState<User | null>(null);
@@ -40,9 +42,9 @@ export default function Perfil() {
             case 2:
                 return <ClientePerfil user = {p}/>;
             case 3:
-                return <div>Role 3 Profile</div>;
+                return <EncargadoPerfil />;
             case 4:
-                return <div>Role 4 Profile</div>;
+                return <EmpresarioPerfil user = {p}/>;
             default:
                 return <div>Unknown Role</div>;
         }
