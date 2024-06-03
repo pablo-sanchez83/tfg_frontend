@@ -5,14 +5,14 @@ import { Locales, TramoHorario, Comentario, FotoLocal, Producto, User } from '@/
 import { ChevronLeft, Star, LoaderCircle } from 'lucide-react';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Contexto } from '../Auth/AuthContext';
-import { Textarea } from '../ui/textarea';
+import { Textarea } from '@/components/ui/textarea';
 import { Rating } from '@smastrom/react-rating';
 import '@smastrom/react-rating/style.css';
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/button';
 import {
     Form,
     FormControl,
@@ -86,6 +86,7 @@ const DetallesLocal: React.FC = () => {
             axios.get<Locales>(`http://localhost:8000/api/local/${id}`)
                 .then((res) => {
                     setLocal(res.data);
+                    document.title = res.data.nombre; // Actualiza el título aquí
                 })
                 .catch((err) => {
                     console.error(err);
@@ -201,7 +202,7 @@ const DetallesLocal: React.FC = () => {
 
     const renderizarComentarios = (comentarios: Comentario[], nivel = 0) => {
         const margenDerecho = nivel * 20; // Ajusta el multiplicador según sea necesario
-    
+
         return comentarios.map((comentario: Comentario) => (
             <div key={comentario.id} className={`flex flex-col items-start justify-center mt-4 box-border bg-gray-100 p-4 w-full mb-4 border rounded max-w-2xl`} style={{ marginRight: `${margenDerecho}px` }}>
                 <p><strong>Usuario:</strong> {comentario.usuario.username}</p>
