@@ -24,9 +24,14 @@ export default function EmpresarioPerfil({ user }: { user: User }) {
 
   useEffect(() => {
     fetchEmpresa();
-    fetchLocales();
     fetchCategoriasCulinarias();
   }, []);
+
+  useEffect(() => {
+    if (empresa) {
+      fetchLocales();
+    }
+  }, [empresa]);
 
   const fetchEmpresa = async () => {
     try {
@@ -43,7 +48,8 @@ export default function EmpresarioPerfil({ user }: { user: User }) {
 
   const fetchLocales = async () => {
     try {
-      const response = await axios.get(baseURL + '/locales/empresa/' + empresa?.id, {
+      if (!empresa) return;
+      const response = await axios.get(baseURL + '/locales/empresa/' + empresa.id, {
         headers: { Authorization: `Token ${localStorage.getItem('token')}` },
       });
       setLocales(response.data);
