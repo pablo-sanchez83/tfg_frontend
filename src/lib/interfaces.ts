@@ -50,7 +50,7 @@ export interface FotoLocal {
 
 export interface Producto {
     id: number;
-    nombre: string;
+    nombre_producto: string;
     descripcion: string;
     precio: number;
     categoria: string;
@@ -82,11 +82,12 @@ export interface TramoHorario {
 
 export interface Comentario {
     id: number;
-    usuario: number;
+    usuario: User;
     fecha: string;
     comentario: string;
     estrellas: number;
     respuesta: boolean;
+    respuestas: Comentario[]; // Añadir este campo
 }
 
 export interface Locales {
