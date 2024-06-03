@@ -43,7 +43,7 @@ export default function EmpresarioPerfil({ user }: { user: User }) {
 
   const fetchLocales = async () => {
     try {
-      const response = await axios.get(baseURL + '/locales', {
+      const response = await axios.get(baseURL + '/locales/empresa/' + empresa?.id, {
         headers: { Authorization: `Token ${localStorage.getItem('token')}` },
       });
       setLocales(response.data);
@@ -119,20 +119,22 @@ export default function EmpresarioPerfil({ user }: { user: User }) {
             <p>Empresa pendiente de confirmación.</p>
           )
         ) : (
-          <CrearEmpresaForm fetchEmpresa={fetchEmpresa} />
+          <CrearEmpresaForm user={user} fetchEmpresa={fetchEmpresa} />
         )}
       </div>
       <div className='w-1/4 flex flex-col gap-4'>
         <EditarPerfil user={user} />
-        <Card>
-          <CardHeader>
-            <CardTitle>Información</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <h1 className='text-xl'>Información de la empresa</h1>
-            <h3 className='text-lg'>Nombre: {empresa?.nombre}</h3>
-          </CardContent>
-        </Card>
+        {empresa && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Información</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <h1 className='text-xl'>Información de la empresa</h1>
+              <h3 className='text-lg'>Nombre: {empresa?.nombre}</h3>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );

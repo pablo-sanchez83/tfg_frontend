@@ -23,8 +23,7 @@ export default function Perfil() {
 
                 setPerfil(response.data);
             } catch (error) {
-                console.error(error);
-                setPerfil(null);
+                window.location.href = '/account';
             }
         };
 
@@ -42,7 +41,7 @@ export default function Perfil() {
             case 2:
                 return <ClientePerfil user = {p}/>;
             case 3:
-                return <EncargadoPerfil />;
+                return <EncargadoPerfil user={p}/>;
             case 4:
                 return <EmpresarioPerfil user = {p}/>;
             default:

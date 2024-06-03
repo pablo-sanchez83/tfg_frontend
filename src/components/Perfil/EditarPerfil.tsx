@@ -113,7 +113,7 @@ export default function EditarPerfil({ user }: UserProfileFormProps) {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input placeholder='Teléfono' {...field} />
+                    <Input placeholder='Teléfono: 9999-999999999' {...field} />
                   </FormControl>
                   {editForm.formState.errors.tel && (
                     <p className='text-red-500'>{editForm.formState.errors.tel.message}</p>
