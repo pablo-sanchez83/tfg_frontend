@@ -48,18 +48,19 @@ const Navbar = () => {
                 Inicio
               </Link>
             </li>
-            <li>
-              <Link to="/perfil" className={`block py-2 px-3 rounded md:p-0 ${isActive('/perfil') ? 'text-[#e67e22] underline' : 'text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#e67e22] dark:text-white md:dark:hover:text-[#e67e22] dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'}`}>
-                Perfil
-              </Link>
-            </li>
-            
             {isLoggedIn && (
-              <li className="w-full md:w-auto">
-                <Link to={"/"} onClick={logout} className="w-full block text-left py-2 px-3 text-white bg-red-600 rounded md:bg-transparent md:text-red-600 md:p-0 md:hover:text-[#e67e22] dark:text-white md:dark:hover:text-[#e67e22] dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
-                  <span className='flex gap-3'><LogOut /> Cerrar sesión</span>
-                </Link>
-              </li>
+              <>
+                <li>
+                  <Link to="/perfil" className={`block py-2 px-3 rounded md:p-0 ${isActive('/perfil') ? 'text-[#e67e22] underline' : 'text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#e67e22] dark:text-white md:dark:hover:text-[#e67e22] dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'}`}>
+                    Perfil
+                  </Link>
+                </li>
+                <li className="w-full md:w-auto">
+                  <Link to={"/"} onClick={logout} className="w-full block text-left py-2 px-3 text-white bg-red-600 rounded md:bg-transparent md:text-red-600 md:p-0 md:hover:text-[#e67e22] dark:text-white md:dark:hover:text-[#e67e22] dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
+                    <span className='flex gap-3'><LogOut /> Cerrar sesión</span>
+                  </Link>
+                </li>
+              </>
             )}
             {!isLoggedIn && (
               <li>
