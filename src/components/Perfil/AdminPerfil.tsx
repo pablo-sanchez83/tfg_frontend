@@ -64,9 +64,9 @@ export default function AdminPerfil({ user }: { user: User }) {
     };
 
     return (
-        <div className='flex gap-4 w-full'>
-            <div className='flex flex-col gap-4 w-3/4'>
-                <Card className='h-1/2 overflow-auto'>
+        <div className='flex gap-4 w-full h-full'>
+            <div className='ml-4 flex flex-col gap-4 w-3/4 h-[80vh]'>
+                <Card className='flex-1 overflow-auto'>
                     <CardHeader>
                         <CardTitle>Usuarios</CardTitle>
                     </CardHeader>
@@ -101,7 +101,7 @@ export default function AdminPerfil({ user }: { user: User }) {
                         </Table>
                     </CardContent>
                 </Card>
-                <Card className='h-1/2 overflow-auto'>
+                <Card className='flex-1 overflow-auto'>
                     <CardHeader>
                         <CardTitle>Empresas</CardTitle>
                     </CardHeader>

@@ -285,7 +285,7 @@ export default function EncargadoPerfil({ user }: { user: User }) {
     };
 
     return (
-        <div className='flex flex-col md:flex-row gap-4 w-full m-3'>
+        <div className='flex flex-col gap-4 w-full m-3'>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-auto'>
                 <Card className='max-h-[500px] overflow-auto '>
                     <CardHeader>
