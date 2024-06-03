@@ -1,5 +1,5 @@
 import { MdiChefHat } from '@/assets/ChefIcon';
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { Contexto } from '../Auth/AuthContext';
 import { LogOut, UserRound } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
@@ -8,6 +8,24 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
+  useEffect(() => {
+    switch (location.pathname) {
+      case '/':
+        document.title = 'Eatbook';
+        break;
+      case '/account':
+        document.title = 'Tu cuenta - Eatbook';
+        break;
+      case '/empresa-cuenta':
+        document.title = 'Cuenta empresa - Eatbook';
+        break;
+      case '/perfil':
+        document.title = 'Tu perfil - Eatbook';
+        break;
+      default:
+        document.title = 'Eatbook';
+    }
+  }, [location])
   const context = useContext(Contexto);
 
   if (!context) {
