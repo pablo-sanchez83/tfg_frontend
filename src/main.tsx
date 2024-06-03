@@ -1,5 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import './index.css';
+import { Proveedor } from './components/Auth/AuthContext';
 
 import GenericLayout from '@/assets/GenericLayout';
 import AccountLayout from '@/assets/AccountLayout';
@@ -11,37 +14,54 @@ import LocalDetails from './components/LocalDetails/LocalDetails';
 import Reserva from './components/Reserva/Reserva';
 import Perfil from './components/Perfil/Perfil';
 
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
-import './index.css';
-import { Proveedor } from './components/Auth/AuthContext';
-
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <GenericLayout><Index /></GenericLayout>,
+    element: (
+      <GenericLayout>
+        <Index />
+      </GenericLayout>
+    ),
   },
   {
     path: "/account",
-    element: <AccountLayout><Login /></AccountLayout>,
+    element: (
+      <AccountLayout>
+        <Login />
+      </AccountLayout>
+    ),
   },
   {
     path: "/empresa-cuenta",
-    element: <AccountLayout><CuentaEmpresa /></AccountLayout>,
+    element: (
+      <AccountLayout>
+        <CuentaEmpresa />
+      </AccountLayout>
+    ),
   },
   {
     path: "/perfil",
-    element: <GenericLayout><Perfil /></GenericLayout>,
+    element: (
+      <GenericLayout>
+        <Perfil />
+      </GenericLayout>
+    ),
   },
   {
     path: "/locales/:id",
-    element: <GenericLayout><LocalDetails /></GenericLayout>,
+    element: (
+      <GenericLayout>
+        <LocalDetails />
+      </GenericLayout>
+    ),
   },
   {
     path: "/reservar/:id",
-    element: <GenericLayout><Reserva /></GenericLayout>,
+    element: (
+      <GenericLayout>
+        <Reserva />
+      </GenericLayout>
+    ),
   },
 ]);
 
