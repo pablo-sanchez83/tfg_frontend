@@ -244,17 +244,16 @@ export default function Login() {
                                 <h1><b>¡Bienvenido de Nuevo!</b></h1>
                                 <p>Ingresa tus datos personales para usar todas las funciones del sitio</p>
                                 <Button className={isSignUp ? '' : 'hidden'} onClick={() => setIsSignUp(false)}>Iniciar Sesión</Button>
-                                <Link to="/empresa-cuenta" className={isSignUp ? '' : 'hidden'} onClick={() => setIsSignUp(true)}>Iniciar Sesión como empresa</Link>
                             </div>
                             <div className={`${styles['toggle-panel']} ${styles['toggle-right']}`}>
                                 <h1><b>¡Hola, Amigo!</b></h1>
                                 <p>Regístrate con tus datos personales para usar todas las funciones del sitio</p>
                                 <Button className={isSignUp ? 'hidden' : ''} onClick={() => setIsSignUp(true)}>Registrarse</Button>
-                                <Link to="/empresa-cuenta" className={isSignUp ? 'hidden' : ''} onClick={() => setIsSignUp(true)}>Registrarse como empresa</Link>
                             </div>
                         </div>
                     </div>
                 </div>
+                <Link to="/empresa-cuenta" className="text-[#E67E22] hover:text-black">¿Quieres registrar una cuenta de empresa?</Link>
             </div>
         </>
     );

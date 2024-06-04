@@ -15,15 +15,12 @@ import { Input } from "@/components/ui/input";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import styles from "./cuentaEmpresa.module.css";
-
 import { Link, useNavigate } from "react-router-dom";
 
 import { Contexto } from "@/components/Auth/AuthContext";
 
 export default function Login() {
     const baseUrl = "http://localhost:8000/api/";
-    const [isSignUp, setIsSignUp] = useState(false);
     const [countryCode, setCountryCode] = useState("34");
     const navigate = useNavigate();
     const context = useContext(Contexto);
@@ -85,176 +82,90 @@ export default function Login() {
             });
     }
 
-    const loginSchema = z.object({
-        email: z.string().email({ message: "Email inválido" }),
-        password: z.string().max(50, { message: "Máximo 50 caracteres" }),
-    });
-
-    const loginForm = useForm<z.infer<typeof loginSchema>>({
-        resolver: zodResolver(loginSchema),
-        defaultValues: {
-            email: "",
-            password: "",
-        },
-    });
-
-    const onLogin = (values: z.infer<typeof loginSchema>) => {
-        axios.post<AuthResponse>(
-            baseUrl + "login",
-            values
-        )
-            .then((res) => {
-                if (res.data.token) {
-                    toast.success("¡Inicio de sesión exitoso!");
-                    login(res.data.token);
-                    navigate("/");
-                }
-            })
-            .catch((err) => {
-                toast.error("¡Inicio de sesión fallido!");
-                console.log(err);
-            });
-    };
-
     return (
         <>
             <ToastContainer />
             <div className="w-screen max-h-screen mt-10 grid place-items-center">
-                <div className={`${styles.container} ${isSignUp ? styles.active : ""}`}>
-                    <div className={`${styles['form-container']} ${styles['sign-up']}`}>
-                        <Form {...signUpForm}>
-                            <form onSubmit={signUpForm.handleSubmit(onSignUp)} className="flex flex-col gap-4 items-center justify-center py-2 h-full">
-                                <h1><b>Crear Cuenta</b></h1>
-                                <FormField
-                                    control={signUpForm.control}
-                                    name="username"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormControl>
-                                                <Input placeholder="Nombre" {...field} />
-                                            </FormControl>
-                                            {signUpForm.formState.errors.username && (
-                                                <p className="text-red-500">{signUpForm.formState.errors.username.message}</p>
-                                            )}
-                                        </FormItem>
+                <Form {...signUpForm}>
+                    <form onSubmit={signUpForm.handleSubmit(onSignUp)} className="m-10 bg-white p-10 border rounded-md shadow-md flex flex-col gap-4 items-center justify-center py-2 h-full">
+                        <h1><b>Crear Cuenta</b></h1>
+                        <FormField
+                            control={signUpForm.control}
+                            name="username"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <Input placeholder="Nombre" {...field} />
+                                    </FormControl>
+                                    {signUpForm.formState.errors.username && (
+                                        <p className="text-red-500">{signUpForm.formState.errors.username.message}</p>
                                     )}
-                                />
-                                <FormField
-                                    control={signUpForm.control}
-                                    name="email"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormControl>
-                                                <Input placeholder="Email" {...field} />
-                                            </FormControl>
-                                            {signUpForm.formState.errors.email && (
-                                                <p className="text-red-500">{signUpForm.formState.errors.email.message}</p>
-                                            )}
-                                        </FormItem>
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={signUpForm.control}
+                            name="email"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <Input placeholder="Email" {...field} />
+                                    </FormControl>
+                                    {signUpForm.formState.errors.email && (
+                                        <p className="text-red-500">{signUpForm.formState.errors.email.message}</p>
                                     )}
-                                />
-                                <div className="flex gap-1 items-center">
-                                    <SelectorPrefijo defaultValue={"34"} onValueChange={setCountryCode} />
-                                    <FormField
-                                        control={signUpForm.control}
-                                        name="tel"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormControl>
-                                                    <Input className="w-1/3" placeholder="Teléfono" {...field} />
-                                                </FormControl>
-                                                {signUpForm.formState.errors.tel && (
-                                                    <p className="text-red-500">{signUpForm.formState.errors.tel.message}</p>
-                                                )}
-                                            </FormItem>
+                                </FormItem>
+                            )}
+                        />
+                        <div className="flex gap-1 items-center">
+                            <SelectorPrefijo defaultValue={"34"} onValueChange={setCountryCode} />
+                            <FormField
+                                control={signUpForm.control}
+                                name="tel"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormControl>
+                                            <Input className="w-full" placeholder="Teléfono" {...field} />
+                                        </FormControl>
+                                        {signUpForm.formState.errors.tel && (
+                                            <p className="text-red-500">{signUpForm.formState.errors.tel.message}</p>
                                         )}
-                                    />
-                                </div>
-                                <FormField
-                                    control={signUpForm.control}
-                                    name="password"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormControl>
-                                                <Input type="password" placeholder="Contraseña" {...field} />
-                                            </FormControl>
-                                            {signUpForm.formState.errors.password && (
-                                                <p className="text-red-500">{signUpForm.formState.errors.password.message}</p>
-                                            )}
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={signUpForm.control}
-                                    name="confirm_password"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormControl>
-                                                <Input type="password" placeholder="Confirmar Contraseña" {...field} />
-                                            </FormControl>
-                                            {signUpForm.formState.errors.confirm_password && (
-                                                <p className="text-red-500">{signUpForm.formState.errors.confirm_password.message}</p>
-                                            )}
-                                        </FormItem>
-                                    )}
-                                />
-                                <Button type="submit" className="w-1/2 self-center bg-[#E67E22] hover:bg-transparent hover:text-black hover:border-[#E67E22] border">Registrarse</Button>
-                            </form>
-                        </Form>
-                    </div>
-                    <div className={`${styles['form-container']} ${styles['sign-in']}`}>
-                        <Form {...loginForm}>
-                            <form onSubmit={loginForm.handleSubmit(onLogin)} className="flex flex-col gap-4">
-                                <h1><b>Iniciar Sesión</b></h1>
-                                <FormField
-                                    control={loginForm.control}
-                                    name="email"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormControl>
-                                                <Input placeholder="Email" {...field} />
-                                            </FormControl>
-                                            {loginForm.formState.errors.email && (
-                                                <p className="text-red-500">{loginForm.formState.errors.email.message}</p>
-                                            )}
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={loginForm.control}
-                                    name="password"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormControl>
-                                                <Input type="password" placeholder="Contraseña" {...field} />
-                                            </FormControl>
-                                            {loginForm.formState.errors.password && (
-                                                <p className="text-red-500">{loginForm.formState.errors.password.message}</p>
-                                            )}
-                                        </FormItem>
-                                    )}
-                                />
-                                <Button type="submit" className="w-1/2 self-center bg-transparent text-black border-[#E67E22] border hover:bg-[#E67E22] hover:text-white hover:border-none">Iniciar Sesión</Button>
-                            </form>
-                        </Form>
-                    </div>
-                    <div className={styles['toggle-container']}>
-                        <div className={styles.toggle}>
-                            <div className={`${styles['toggle-panel']} ${styles['toggle-left']}`}>
-                                <h1><b>¡Bienvenido de Nuevo!</b></h1>
-                                <p>Ingresa tus datos personales para usar todas las funciones del sitio</p>
-                                <Button className={isSignUp ? '' : 'hidden'} onClick={() => { setIsSignUp(false) }}>Iniciar Sesión como empresa</Button>
-                                <Link to="/account" className={isSignUp ? '' : 'hidden'} onClick={() => { setIsSignUp(true) }}>Iniciar Sesión como persona</Link>
-                            </div>
-                            <div className={`${styles['toggle-panel']} ${styles['toggle-right']}`}>
-                                <h1><b>¡Hola, Amigo!</b></h1>
-                                <p>Regístrate con tus datos personales para usar todas las funciones del sitio</p>
-                                <Button className={isSignUp ? 'hidden' : ''} onClick={() => setIsSignUp(true)}>Registrarse como empresa</Button>
-                                <Link to="/account" className={isSignUp ? 'hidden' : ''} onClick={() => { setIsSignUp(false) }}>Registrarse como persona</Link>
-                            </div>
+                                    </FormItem>
+                                )}
+                            />
                         </div>
-                    </div>
-                </div>
+                        <FormField
+                            control={signUpForm.control}
+                            name="password"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <Input type="password" placeholder="Contraseña" {...field} />
+                                    </FormControl>
+                                    {signUpForm.formState.errors.password && (
+                                        <p className="text-red-500">{signUpForm.formState.errors.password.message}</p>
+                                    )}
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={signUpForm.control}
+                            name="confirm_password"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <Input type="password" placeholder="Confirmar Contraseña" {...field} />
+                                    </FormControl>
+                                    {signUpForm.formState.errors.confirm_password && (
+                                        <p className="text-red-500">{signUpForm.formState.errors.confirm_password.message}</p>
+                                    )}
+                                </FormItem>
+                            )}
+                        />
+                        <Button type="submit" className="w-1/2 self-center bg-[#E67E22] hover:bg-transparent hover:text-black hover:border-[#E67E22] border">Registrarse</Button>
+                    </form>
+                </Form>
+                <Link to="/account" className="text-[#E67E22] hover:text-black">¿Tienes una cuenta de cliente?</Link>
             </div>
         </>
     );
