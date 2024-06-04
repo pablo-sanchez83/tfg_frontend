@@ -368,8 +368,8 @@ export default function EncargadoPerfil({ user }: { user: User }) {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {productos.map((producto) => (
-                                        <TableRow key={producto.id}>
+                                    {productos.map((producto, index) => (
+                                        <TableRow key={index}>
                                             <TableCell>{producto.nombre_producto}</TableCell>
                                             <TableCell>{producto.descripcion}</TableCell>
                                             <TableCell>{producto.precio}</TableCell>
@@ -411,8 +411,8 @@ export default function EncargadoPerfil({ user }: { user: User }) {
                             <div>
                                 <label>Días</label>
                                 <div className='flex gap-2'>
-                                    {dias.map((dia) => (
-                                        <label key={dia} className='flex items-center gap-1'>
+                                    {dias.map((dia, index) => (
+                                        <label key={index} className='flex items-center gap-1'>
                                             <Input type="checkbox" {...horarioForm.register(dia)} />
                                             {dia}
                                         </label>
@@ -437,12 +437,12 @@ export default function EncargadoPerfil({ user }: { user: User }) {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {horarios.map((horario) => (
-                                        <TableRow key={horario.id}>
+                                    {horarios.map((horario, index) => (
+                                        <TableRow key={index}>
                                             <TableCell>{horario.hora_apertura}</TableCell>
                                             <TableCell>{horario.hora_cierre}</TableCell>
                                             <TableCell>
-                                                {dias.map((dia) => horario[dia] && <span key={dia}>{dia} </span>)}
+                                                {dias.map((dia, index) => horario[dia] && <span key={index}>{dia} </span>)}
                                             </TableCell>
                                             <TableCell>
                                                 <Button onClick={() => deleteRecord('horario', horario.id)}>Eliminar</Button>
@@ -505,8 +505,8 @@ export default function EncargadoPerfil({ user }: { user: User }) {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {tramos.map((tramo) => (
-                                        <TableRow key={tramo.id}>
+                                    {tramos.map((tramo, index) => (
+                                        <TableRow key={index}>
                                             <TableCell>{tramo.h_inicio}</TableCell>
                                             <TableCell>{tramo.h_final}</TableCell>
                                             <TableCell>{tramo.nombre}</TableCell>
@@ -546,8 +546,8 @@ export default function EncargadoPerfil({ user }: { user: User }) {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {fotos.map((foto) => (
-                                        <TableRow key={foto.id}>
+                                    {fotos.map((foto, index) => (
+                                        <TableRow key={index}>
                                             <TableCell>
                                                 <img src={'http://127.0.0.1:8000' + foto.imagen} alt={`Foto ${foto.id}`} width="50" />
                                             </TableCell>
@@ -578,8 +578,8 @@ export default function EncargadoPerfil({ user }: { user: User }) {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {reservas.map((reserva) => (
-                                        <TableRow key={reserva.id}>
+                                    {reservas.map((reserva, index) => (
+                                        <TableRow key={index}>
                                             <TableCell>{reserva.fecha}</TableCell>
                                             <TableCell>{reserva.hora}</TableCell>
                                             <TableCell>{reserva.estado}</TableCell>

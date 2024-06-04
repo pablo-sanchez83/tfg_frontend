@@ -55,20 +55,20 @@ export default function Index() {
                     </SelectTrigger>
                     <SelectContent>
                         <SelectItem value="todas">Todas las categorías</SelectItem>
-                        {categorias.map((categoria) => (
-                            <SelectItem key={categoria.id} value={categoria.id.toString()}>{categoria.nombre}</SelectItem>
+                        {categorias.map((categoria, index) => (
+                            <SelectItem key={index} value={categoria.id.toString()}>{categoria.nombre}</SelectItem>
                         ))}
                     </SelectContent>
                 </Select>
             </div>
             <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-                {localesFiltrados.map((local) => (
-                    <Card key={local.id} className="max-w-sm h-fit rounded shadow-lg m-4">
+                {localesFiltrados.map((local, index) => (
+                    <Card key={index} className="max-w-sm h-fit rounded shadow-lg m-4">
                         <CardHeader>
                             <Carousel className="w-full max-w-xs">
                                 <CarouselContent>
-                                    {local.fotos.map((foto) => (
-                                        <CarouselItem key={foto.id}><img className="max-h-60 min-h-56" src={"http://localhost:8000/" + foto.imagen} alt="Imagen del local" /></CarouselItem>
+                                    {local.fotos.map((foto, index) => (
+                                        <CarouselItem key={index}><img className="max-h-60 min-h-56" src={"http://localhost:8000/" + foto.imagen} alt="Imagen del local" /></CarouselItem>
                                     ))}
                                 </CarouselContent>
                                 <CarouselPrevious />

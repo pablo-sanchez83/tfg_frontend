@@ -83,8 +83,8 @@ export default function AdminPerfil({ user }: { user: User }) {
                             </TableHeader>
                             <TableBody>
                                 {users.length > 0 ? (
-                                    users.map((user) => (
-                                        <TableRow key={user.id}>
+                                    users.map((user, index) => (
+                                        <TableRow key={index}>
                                             <TableCell>{user.username}</TableCell>
                                             <TableCell>{user.email}</TableCell>
                                             <TableCell>{user.tel}</TableCell>
@@ -117,8 +117,8 @@ export default function AdminPerfil({ user }: { user: User }) {
                             </TableHeader>
                             <TableBody>
                                 {empresas.length > 0 ? (
-                                    empresas.map((empresa) => (
-                                        <TableRow key={empresa.id}>
+                                    empresas.map((empresa, index) => (
+                                        <TableRow key={index}>
                                             <TableCell>{empresa.nombre}</TableCell>
                                             <TableCell>
                                                 <input

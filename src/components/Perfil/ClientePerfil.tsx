@@ -62,8 +62,8 @@ const MisReservas = ({ user }: { user: User }) => {
                             </TableHeader>
                             <TableBody>
                                 {reservas.length > 0 ? (
-                                    reservas.map((reserva) => (
-                                        <TableRow key={reserva.id}>
+                                    reservas.map((reserva, index) => (
+                                        <TableRow key={index}>
                                             <TableCell>{reserva.local.nombre}</TableCell>
                                             <TableCell>{format(new Date(reserva.fecha), 'dd/MM/yyyy')}</TableCell>
                                             <TableCell>{reserva.hora}</TableCell>

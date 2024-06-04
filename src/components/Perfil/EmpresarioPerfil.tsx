@@ -102,8 +102,8 @@ export default function EmpresarioPerfil({ user }: { user: User }) {
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {locales.map((local) => (
-                          <TableRow key={local.id}>
+                        {locales.map((local, index) => (
+                          <TableRow key={index}>
                             <TableCell>{local.nombre}</TableCell>
                             <TableCell>{local.direccion}</TableCell>
                             <TableCell>

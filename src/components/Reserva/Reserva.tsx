@@ -1,9 +1,15 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 const Reserva: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-
+  useEffect(() => {
+    axios.get('http://localhost:8000/api/local/' + id)
+      .then((res) => {
+        console.log(res.data);
+    })
+  }, [])
   return (
     <div>
       <h1>Reservar Local</h1>

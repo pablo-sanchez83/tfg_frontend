@@ -109,9 +109,9 @@ const DetallesLocal: React.FC = () => {
     ];
 
     const renderizarDias = (dias: { [key: string]: boolean }) => {
-        return diasDeLaSemana.map(dia => (
+        return diasDeLaSemana.map((dia, index) => (
             <span
-                key={dia.value}
+                key={index}
                 className={`px-2 py-1 rounded w-8 grid place-content-center text-white ${dias[dia.value] ? 'bg-green-500' : 'bg-red-500'}`}
             >
                 {dia.label}
@@ -203,8 +203,8 @@ const DetallesLocal: React.FC = () => {
     const renderizarComentarios = (comentarios: Comentario[], nivel = 0) => {
         const margenDerecho = nivel * 20; // Ajusta el multiplicador según sea necesario
 
-        return comentarios.map((comentario: Comentario) => (
-            <div key={comentario.id} className={`flex flex-col items-start justify-center mt-4 box-border bg-gray-100 p-4 w-full mb-4 border rounded max-w-2xl`} style={{ marginRight: `${margenDerecho}px` }}>
+        return comentarios.map((comentario: Comentario, index) => (
+            <div key={index} className={`flex flex-col items-start justify-center mt-4 box-border bg-gray-100 p-4 w-full mb-4 border rounded max-w-2xl`} style={{ marginRight: `${margenDerecho}px` }}>
                 <p><strong>Usuario:</strong> {comentario.usuario.username}</p>
                 <p><strong>Fecha:</strong> {comentario.fecha}</p>
                 <p><strong>Comentario:</strong><br /> {comentario.comentario}</p>
@@ -269,8 +269,8 @@ const DetallesLocal: React.FC = () => {
                             <div key={index}>
                                 <h1 className="text-xl font-bold">{categoria}</h1>
                                 <ul>
-                                    {productosPorCategoria[categoria].map((producto: Producto) => (
-                                        <div key={producto.id} className="flex flex-col items-center justify-center bg-gray-100 p-4 w-full mb-4 border rounded">
+                                    {productosPorCategoria[categoria].map((producto: Producto, index) => (
+                                        <div key={index} className="flex flex-col items-center justify-center bg-gray-100 p-4 w-full mb-4 border rounded">
                                             <img src={'http://localhost:8000' + producto.imagen} alt={producto.nombre_producto} className='w-full h-auto' />
                                             <li className="py-2">
                                                 <h2 className="text-md font-semibold">{producto.nombre_producto}</h2>

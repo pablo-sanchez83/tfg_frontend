@@ -124,8 +124,8 @@ export default function CrearLocalForm({ categorias, empresa, fetchLocales }: Cr
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {categorias.map((categoria) => (
-                        <SelectItem key={categoria.id} value={String(categoria.id)}>
+                      {categorias.map((categoria, index) => (
+                        <SelectItem key={index} value={String(categoria.id)}>
                           {categoria.nombre}
                         </SelectItem>
                       ))}
