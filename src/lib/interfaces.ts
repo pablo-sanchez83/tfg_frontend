@@ -63,6 +63,7 @@ export interface Horario {
   hora_apertura: string;
   hora_cierre: string;
   dias: {
+    [key: string]: boolean;
     L: boolean;
     M: boolean;
     X: boolean;
@@ -72,6 +73,7 @@ export interface Horario {
     D: boolean;
   };
 }
+
 
 export interface TramoHorario {
   id: number;
