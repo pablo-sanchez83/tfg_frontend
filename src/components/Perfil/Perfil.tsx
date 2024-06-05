@@ -7,47 +7,50 @@ import EmpresarioPerfil from "./EmpresarioPerfil";
 import EncargadoPerfil from "./EncargadoPerfil";
 
 export default function Perfil() {
-    const [perfil, setPerfil] = useState<User | null>(null);
+  const [perfil, setPerfil] = useState<User | null>(null);
 
-    useEffect(() => {
-        const fetchProfile = async () => {
-            try {
-                const token = localStorage.getItem('token');
-                if (!token) {
-                    throw new Error('No token found');
-                }
-
-                const response = await axios.get('http://127.0.0.1:8000/api/mi_usuario', {
-                    headers: { Authorization: `Token ${token}` }
-                });
-
-                setPerfil(response.data);
-            } catch (error) {
-                window.location.href = '/account';
-            }
-        };
-
-        fetchProfile();
-    }, []);
-
-    function profileData(p: User | null) {
-        if (!p) {
-            return <div>No profile data available</div>;
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          throw new Error("No token found");
         }
 
-        switch (p.rol) {
-            case 1:
-                return <AdminPerfil user = {p}/>;
-            case 2:
-                return <ClientePerfil user = {p}/>;
-            case 3:
-                return <EncargadoPerfil user={p}/>;
-            case 4:
-                return <EmpresarioPerfil user = {p}/>;
-            default:
-                return <div>Unknown Role</div>;
-        }
+        const response = await axios.get(
+          "http://127.0.0.1:8000/api/mi_usuario",
+          {
+            headers: { Authorization: `Token ${token}` },
+          },
+        );
+
+        setPerfil(response.data);
+      } catch (error) {
+        window.location.href = "/account";
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
+  function profileData(p: User | null) {
+    if (!p) {
+      return <div>No profile data available</div>;
     }
 
-    return profileData(perfil);
+    switch (p.rol) {
+      case 1:
+        return <AdminPerfil user={p} />;
+      case 2:
+        return <ClientePerfil user={p} />;
+      case 3:
+        return <EncargadoPerfil user={p} />;
+      case 4:
+        return <EmpresarioPerfil user={p} />;
+      default:
+        return <div>Unknown Role</div>;
+    }
+  }
+
+  return profileData(perfil);
 }

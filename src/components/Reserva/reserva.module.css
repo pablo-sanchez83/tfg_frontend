@@ -1,0 +1,10 @@
+.fondo {
+  background-image: url("../../assets/bgreserva.svg");
+  background-repeat: repeat;
+  background-size: cover;
+}
+
+.inputContainer {
+  width: 100%;
+  max-width: 300px;
+}
