@@ -14,12 +14,11 @@ import { Trash } from "lucide-react";
 import { Empresa, User } from "@/lib/interfaces";
 import EditarPerfil from "./utils/EditarPerfil";
 import MisReservas from "./utils/MisReservas";
+import env from "@/lib/env";
 
 export default function AdminPerfil({ user }: { user: User }) {
   const [users, setUsers] = useState<User[]>([]);
   const [empresas, setEmpresas] = useState<Empresa[]>([]);
-
-  const baseURL = "http://127.0.0.1:8000/api";
 
   useEffect(() => {
     fetchUsers();
@@ -28,8 +27,8 @@ export default function AdminPerfil({ user }: { user: User }) {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get(baseURL + "/usuarios", {
-        headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+      const response = await axios.get(env.API_BASE_URL + env.endpoints.usuarios, {
+        headers: { Authorization: `Token ${localStorage.getItem(env.TOKEN_KEY)}` },
       });
       setUsers(response.data);
     } catch (error) {
@@ -39,8 +38,8 @@ export default function AdminPerfil({ user }: { user: User }) {
 
   const fetchEmpresas = async () => {
     try {
-      const response = await axios.get(baseURL + "/empresas", {
-        headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+      const response = await axios.get(env.API_BASE_URL + env.endpoints.empresas, {
+        headers: { Authorization: `Token ${localStorage.getItem(env.TOKEN_KEY)}` },
       });
       setEmpresas(response.data);
     } catch (error) {
@@ -50,8 +49,8 @@ export default function AdminPerfil({ user }: { user: User }) {
 
   const handleDeleteUser = async (id: number) => {
     try {
-      await axios.delete(baseURL + `/usuario/${id}`, {
-        headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+      await axios.delete(env.API_BASE_URL + env.endpoints.usuario(id), {
+        headers: { Authorization: `Token ${localStorage.getItem(env.TOKEN_KEY)}` },
       });
       setUsers(users.filter((user) => user.id !== id));
     } catch (error) {
@@ -61,8 +60,8 @@ export default function AdminPerfil({ user }: { user: User }) {
 
   const handleDeleteEmpresa = async (id: number) => {
     try {
-      await axios.delete(baseURL + `/empresa/${id}`, {
-        headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+      await axios.delete(env.API_BASE_URL + env.endpoints.empresa(id), {
+        headers: { Authorization: `Token ${localStorage.getItem(env.TOKEN_KEY)}` },
       });
       setEmpresas(empresas.filter((empresa) => empresa.id !== id));
     } catch (error) {
@@ -73,10 +72,10 @@ export default function AdminPerfil({ user }: { user: User }) {
   const handleToggleConfirmado = async (id: number, confirmado: boolean) => {
     try {
       await axios.patch(
-        `${baseURL}/empresa/${id}`,
+        env.API_BASE_URL + env.endpoints.empresa(id),
         { confirmado },
         {
-          headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+          headers: { Authorization: `Token ${localStorage.getItem(env.TOKEN_KEY)}` },
         },
       );
       setEmpresas(

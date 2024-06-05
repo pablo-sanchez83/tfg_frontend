@@ -20,7 +20,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import { MoreVertical, Trash } from "lucide-react";
 import {
   Locales,
@@ -368,212 +368,449 @@ export default function EncargadoPerfil({ user }: { user: User }) {
   };
 
   return (
-    <div className="flex flex-col gap-4 w-full m-3">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-auto">
-        <Card className="max-h-[500px] overflow-auto ">
-          <CardHeader>
-            <CardTitle>Información del Local</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={localForm.handleSubmit(handleUpdateLocal)}>
-              <div>
-                <label>Nombre</label>
-                <Input {...localForm.register("nombre")} />
-                {localForm.formState.errors.nombre && (
-                  <p className="text-red-500">
-                    {localForm.formState.errors.nombre.message}
-                  </p>
-                )}
-              </div>
-              <div>
-                <label>Dirección</label>
-                <Input {...localForm.register("direccion")} />
-                {localForm.formState.errors.direccion && (
-                  <p className="text-red-500">
-                    {localForm.formState.errors.direccion.message}
-                  </p>
-                )}
-              </div>
-              <Button type="submit" className="mt-4">
-                Actualizar Información
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
-
-        <Card className="max-h-[500px] overflow-auto">
-          <CardHeader>
-            <CardTitle>Productos</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={productoForm.handleSubmit(handleAddProducto)}>
-              <div>
-                <label>Nombre</label>
-                <Input {...productoForm.register("nombre_producto")} />
-                {productoForm.formState.errors.nombre_producto && (
-                  <p className="text-red-500">
-                    {productoForm.formState.errors.nombre_producto.message}
-                  </p>
-                )}
-              </div>
-              <div>
-                <label>Descripción</label>
-                <Input {...productoForm.register("descripcion")} />
-                {productoForm.formState.errors.descripcion && (
-                  <p className="text-red-500">
-                    {productoForm.formState.errors.descripcion.message}
-                  </p>
-                )}
-              </div>
-              <div>
-                <label>Precio</label>
-                <Input {...productoForm.register("precio")} />
-                {productoForm.formState.errors.precio && (
-                  <p className="text-red-500">
-                    {productoForm.formState.errors.precio.message}
-                  </p>
-                )}
-              </div>
-              <div>
-                <label>Categoria</label>
-                <Input {...productoForm.register("categoria")} />
-                {productoForm.formState.errors.categoria && (
-                  <p className="text-red-500">
-                    {productoForm.formState.errors.categoria.message}
-                  </p>
-                )}
-              </div>
-              <div>
-                <label>Imagen</label>
-                <Input type="file" {...productoForm.register("imagen")} />
-              </div>
-              <Button type="submit" className="mt-4">
-                Agregar Producto
-              </Button>
-            </form>
-          </CardContent>
-          {productos.length > 0 && (
+    <>
+      <ToastContainer/>
+      <div className="flex flex-col gap-4 w-full m-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-auto">
+          <Card className="max-h-[500px] overflow-auto ">
+            <CardHeader>
+              <CardTitle>Información del Local</CardTitle>
+            </CardHeader>
             <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Nombre</TableHead>
-                    <TableHead>Descripción</TableHead>
-                    <TableHead>Precio</TableHead>
-                    <TableHead>Categoria</TableHead>
-                    <TableHead>Imagen</TableHead>
-                    <TableHead>Acciones</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {productos.map((producto, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{producto.nombre_producto}</TableCell>
-                      <TableCell>{producto.descripcion}</TableCell>
-                      <TableCell>{producto.precio}</TableCell>
-                      <TableCell>{producto.categoria}</TableCell>
-                      <TableCell>
-                        <img
-                          src={producto.imagen}
-                          alt={producto.nombre_producto}
-                          width="50"
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost">
-                              <MoreVertical />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent>
-                            <DropdownMenuItem
-                              onClick={() =>
-                                deleteRecord("producto", producto.id)
-                              }
-                            >
-                              <Trash className="h-4 w-4" color="red" />
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          )}
-        </Card>
-
-        <Card className="max-h-[500px] overflow-auto">
-          <CardHeader>
-            <CardTitle>Horarios</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={horarioForm.handleSubmit(handleAddHorario)}>
-              <div>
-                <label>Hora Apertura</label>
-                <Input type="time" {...horarioForm.register("hora_apertura")} />
-                {horarioForm.formState.errors.hora_apertura && (
-                  <p className="text-red-500">
-                    {horarioForm.formState.errors.hora_apertura.message}
-                  </p>
-                )}
-              </div>
-              <div>
-                <label>Hora Cierre</label>
-                <Input type="time" {...horarioForm.register("hora_cierre")} />
-                {horarioForm.formState.errors.hora_cierre && (
-                  <p className="text-red-500">
-                    {horarioForm.formState.errors.hora_cierre.message}
-                  </p>
-                )}
-              </div>
-              <div>
-                <label>Días</label>
-                <div className="flex gap-2">
-                  {dias.map((dia, index) => (
-                    <label key={index} className="flex items-center gap-1">
-                      <Input type="checkbox" {...horarioForm.register(dia)} />
-                      {dia}
-                    </label>
-                  ))}
-                </div>
-                {Object.keys(horarioForm.formState.errors).some((key) =>
-                  dias.includes(key as Dia),
-                ) && (
+              <form onSubmit={localForm.handleSubmit(handleUpdateLocal)}>
+                <div>
+                  <label>Nombre</label>
+                  <Input {...localForm.register("nombre")} />
+                  {localForm.formState.errors.nombre && (
                     <p className="text-red-500">
-                      Debe seleccionar al menos un día
+                      {localForm.formState.errors.nombre.message}
                     </p>
                   )}
-              </div>
-              <Button type="submit" className="mt-4">
-                Agregar Horario
-              </Button>
-            </form>
-          </CardContent>
-          {horarios.length > 0 && (
+                </div>
+                <div>
+                  <label>Dirección</label>
+                  <Input {...localForm.register("direccion")} />
+                  {localForm.formState.errors.direccion && (
+                    <p className="text-red-500">
+                      {localForm.formState.errors.direccion.message}
+                    </p>
+                  )}
+                </div>
+                <Button type="submit" className="mt-4">
+                  Actualizar Información
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+
+          <Card className="max-h-[500px] overflow-auto">
+            <CardHeader>
+              <CardTitle>Productos</CardTitle>
+            </CardHeader>
             <CardContent>
+              <form onSubmit={productoForm.handleSubmit(handleAddProducto)}>
+                <div>
+                  <label>Nombre</label>
+                  <Input {...productoForm.register("nombre_producto")} />
+                  {productoForm.formState.errors.nombre_producto && (
+                    <p className="text-red-500">
+                      {productoForm.formState.errors.nombre_producto.message}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label>Descripción</label>
+                  <Input {...productoForm.register("descripcion")} />
+                  {productoForm.formState.errors.descripcion && (
+                    <p className="text-red-500">
+                      {productoForm.formState.errors.descripcion.message}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label>Precio</label>
+                  <Input {...productoForm.register("precio")} />
+                  {productoForm.formState.errors.precio && (
+                    <p className="text-red-500">
+                      {productoForm.formState.errors.precio.message}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label>Categoria</label>
+                  <Input {...productoForm.register("categoria")} />
+                  {productoForm.formState.errors.categoria && (
+                    <p className="text-red-500">
+                      {productoForm.formState.errors.categoria.message}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label>Imagen</label>
+                  <Input type="file" {...productoForm.register("imagen")} />
+                </div>
+                <Button type="submit" className="mt-4">
+                  Agregar Producto
+                </Button>
+              </form>
+            </CardContent>
+            {productos.length > 0 && (
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Nombre</TableHead>
+                      <TableHead>Descripción</TableHead>
+                      <TableHead>Precio</TableHead>
+                      <TableHead>Categoria</TableHead>
+                      <TableHead>Imagen</TableHead>
+                      <TableHead>Acciones</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {productos.map((producto, index) => (
+                      <TableRow key={index}>
+                        <TableCell>{producto.nombre_producto}</TableCell>
+                        <TableCell>{producto.descripcion}</TableCell>
+                        <TableCell>{producto.precio}</TableCell>
+                        <TableCell>{producto.categoria}</TableCell>
+                        <TableCell>
+                          <img
+                            src={producto.imagen}
+                            alt={producto.nombre_producto}
+                            width="50"
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost">
+                                <MoreVertical />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                              <DropdownMenuItem
+                                onClick={() =>
+                                  deleteRecord("producto", producto.id)
+                                }
+                              >
+                                <Trash className="h-4 w-4" color="red" />
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            )}
+          </Card>
+
+          <Card className="max-h-[500px] overflow-auto">
+            <CardHeader>
+              <CardTitle>Horarios</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={horarioForm.handleSubmit(handleAddHorario)}>
+                <div>
+                  <label>Hora Apertura</label>
+                  <Input type="time" {...horarioForm.register("hora_apertura")} />
+                  {horarioForm.formState.errors.hora_apertura && (
+                    <p className="text-red-500">
+                      {horarioForm.formState.errors.hora_apertura.message}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label>Hora Cierre</label>
+                  <Input type="time" {...horarioForm.register("hora_cierre")} />
+                  {horarioForm.formState.errors.hora_cierre && (
+                    <p className="text-red-500">
+                      {horarioForm.formState.errors.hora_cierre.message}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label>Días</label>
+                  <div className="flex gap-2">
+                    {dias.map((dia, index) => (
+                      <label key={index} className="flex items-center gap-1">
+                        <Input type="checkbox" {...horarioForm.register(dia)} />
+                        {dia}
+                      </label>
+                    ))}
+                  </div>
+                  {Object.keys(horarioForm.formState.errors).some((key) =>
+                    dias.includes(key as Dia),
+                  ) && (
+                      <p className="text-red-500">
+                        Debe seleccionar al menos un día
+                      </p>
+                    )}
+                </div>
+                <Button type="submit" className="mt-4">
+                  Agregar Horario
+                </Button>
+              </form>
+            </CardContent>
+            {horarios.length > 0 && (
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Hora Apertura</TableHead>
+                      <TableHead>Hora Cierre</TableHead>
+                      <TableHead>Días</TableHead>
+                      <TableHead>Acciones</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {horarios.map((horario, index) => (
+                      <TableRow key={index}>
+                        <TableCell>{horario.hora_apertura}</TableCell>
+                        <TableCell>{horario.hora_cierre}</TableCell>
+                        <TableCell>
+                          {dias.map(
+                            (dia, index) =>
+                              horario[dia] && <span key={index}>{dia} </span>,
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost">
+                                <MoreVertical />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                              <DropdownMenuItem
+                                onClick={() =>
+                                  deleteRecord("horario", horario.id)
+                                }
+                              >
+                                <Trash className="h-4 w-4" color="red" />
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            )}
+          </Card>
+
+          <Card className="max-h-[500px] overflow-auto">
+            <CardHeader>
+              <CardTitle>Tramos Horarios</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <form
+                onSubmit={tramoHorarioForm.handleSubmit(handleAddTramoHorario)}
+              >
+                <div>
+                  <label>Hora Inicio</label>
+                  <Input type="time" {...tramoHorarioForm.register("h_inicio")} />
+                  {tramoHorarioForm.formState.errors.h_inicio && (
+                    <p className="text-red-500">
+                      {tramoHorarioForm.formState.errors.h_inicio.message}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label>Hora Final</label>
+                  <Input type="time" {...tramoHorarioForm.register("h_final")} />
+                  {tramoHorarioForm.formState.errors.h_final && (
+                    <p className="text-red-500">
+                      {tramoHorarioForm.formState.errors.h_final.message}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label>Nombre</label>
+                  <Input {...tramoHorarioForm.register("nombre")} />
+                  {tramoHorarioForm.formState.errors.nombre && (
+                    <p className="text-red-500">
+                      {tramoHorarioForm.formState.errors.nombre.message}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label>Clientes Máximos</label>
+                  <Input {...tramoHorarioForm.register("clientes_maximos")} />
+                  {tramoHorarioForm.formState.errors.clientes_maximos && (
+                    <p className="text-red-500">
+                      {tramoHorarioForm.formState.errors.clientes_maximos.message}
+                    </p>
+                  )}
+                </div>
+                <Button type="submit" className="mt-4">
+                  Agregar Tramo Horario
+                </Button>
+              </form>
+            </CardContent>
+            {tramos.length > 0 && (
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Hora Inicio</TableHead>
+                      <TableHead>Hora Final</TableHead>
+                      <TableHead>Nombre</TableHead>
+                      <TableHead>Clientes Máximos</TableHead>
+                      <TableHead>Acciones</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {tramos.map((tramo, index) => (
+                      <TableRow key={index}>
+                        <TableCell>{tramo.h_inicio}</TableCell>
+                        <TableCell>{tramo.h_final}</TableCell>
+                        <TableCell>{tramo.nombre}</TableCell>
+                        <TableCell>{tramo.clientes_maximos}</TableCell>
+                        <TableCell>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost">
+                                <MoreVertical />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                              <DropdownMenuItem
+                                onClick={() =>
+                                  deleteRecord("tramo_horario", tramo.id)
+                                }
+                              >
+                                <Trash className="h-4 w-4" color="red" />
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            )}
+          </Card>
+
+          <Card className="max-h-[500px] overflow-auto">
+            <CardHeader>
+              <CardTitle>Fotos del Local</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={fotoForm.handleSubmit(handleAddFoto)}>
+                <div>
+                  <label>Imagen</label>
+                  <Input type="file" {...fotoForm.register("imagen")} />
+                </div>
+                <Button type="submit" className="mt-4">
+                  Agregar Foto
+                </Button>
+              </form>
+            </CardContent>
+            {fotos.length > 0 && (
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Imagen</TableHead>
+                      <TableHead>Acciones</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {fotos.map((foto, index) => (
+                      <TableRow key={index}>
+                        <TableCell>
+                          <img
+                            src={"http://127.0.0.1:8000" + foto.imagen}
+                            alt={`Foto ${foto.id}`}
+                            width="50"
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost">
+                                <MoreVertical />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                              <DropdownMenuItem
+                                onClick={() =>
+                                  deleteRecord("foto_local", foto.id)
+                                }
+                              >
+                                <Trash className="h-4 w-4" color="red" />
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            )}
+          </Card>
+
+          <div className="max-h-[500px]">
+            <EditarPerfil user={user} />
+          </div>
+
+        </div>
+        <Card className="max-h-[500px] overflow-auto">
+          <CardHeader>
+            <CardTitle>Reservas</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {reservas.length > 0 ? (
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Hora Apertura</TableHead>
-                    <TableHead>Hora Cierre</TableHead>
-                    <TableHead>Días</TableHead>
+                    <TableHead>Nombre de cliente</TableHead>
+                    <TableHead>Telefono de cliente</TableHead>
+                    <TableHead>Fecha</TableHead>
+                    <TableHead>Hora</TableHead>
+                    <TableHead>Estado</TableHead>
                     <TableHead>Acciones</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {horarios.map((horario, index) => (
+                  {reservas.map((reserva, index) => (
                     <TableRow key={index}>
-                      <TableCell>{horario.hora_apertura}</TableCell>
-                      <TableCell>{horario.hora_cierre}</TableCell>
                       <TableCell>
-                        {dias.map(
-                          (dia, index) =>
-                            horario[dia] && <span key={index}>{dia} </span>,
+                        {reserva.usuario.first_name ? (
+                          <>
+                            {reserva.usuario.first_name}
+                            {reserva.usuario.last_name && (
+                              <> {reserva.usuario.last_name} </>
+                            )}
+                          </>
+                        ) : (
+                          <> {reserva.usuario.username} </>
                         )}
                       </TableCell>
+
+                      <TableCell>{reserva.usuario.tel}</TableCell>
+                      <TableCell>{reserva.fecha}</TableCell>
+                      <TableCell>{reserva.hora}</TableCell>
+                      <TableCell>
+                        <Select
+                          onValueChange={(e) => updateReservaEstado(reserva.id, e)}
+                        >
+                          <SelectTrigger>
+                            <SelectValue className="w-32" placeholder={estadoToString(reserva.estado.toString())} />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="1">Pendiente</SelectItem>
+                            <SelectItem value="2">Aceptada</SelectItem>
+                            <SelectItem value="3">Rechazada</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </TableCell>
                       <TableCell>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
@@ -583,11 +820,11 @@ export default function EncargadoPerfil({ user }: { user: User }) {
                           </DropdownMenuTrigger>
                           <DropdownMenuContent>
                             <DropdownMenuItem
-                              onClick={() =>
-                                deleteRecord("horario", horario.id)
-                              }
+                              onClick={() => deleteRecord("reserva", reserva.id, reserva)}
                             >
-                              <Trash className="h-4 w-4" color="red" />
+                              <div className="grid h-10 w-10 bg-white border rounded border-red-300 place-items-center">
+                                <Trash className="h-6 w-6" color="red" />
+                              </div>
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
@@ -596,247 +833,13 @@ export default function EncargadoPerfil({ user }: { user: User }) {
                   ))}
                 </TableBody>
               </Table>
-            </CardContent>
-          )}
-        </Card>
-
-        <Card className="max-h-[500px] overflow-auto">
-          <CardHeader>
-            <CardTitle>Tramos Horarios</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form
-              onSubmit={tramoHorarioForm.handleSubmit(handleAddTramoHorario)}
-            >
-              <div>
-                <label>Hora Inicio</label>
-                <Input type="time" {...tramoHorarioForm.register("h_inicio")} />
-                {tramoHorarioForm.formState.errors.h_inicio && (
-                  <p className="text-red-500">
-                    {tramoHorarioForm.formState.errors.h_inicio.message}
-                  </p>
-                )}
-              </div>
-              <div>
-                <label>Hora Final</label>
-                <Input type="time" {...tramoHorarioForm.register("h_final")} />
-                {tramoHorarioForm.formState.errors.h_final && (
-                  <p className="text-red-500">
-                    {tramoHorarioForm.formState.errors.h_final.message}
-                  </p>
-                )}
-              </div>
-              <div>
-                <label>Nombre</label>
-                <Input {...tramoHorarioForm.register("nombre")} />
-                {tramoHorarioForm.formState.errors.nombre && (
-                  <p className="text-red-500">
-                    {tramoHorarioForm.formState.errors.nombre.message}
-                  </p>
-                )}
-              </div>
-              <div>
-                <label>Clientes Máximos</label>
-                <Input {...tramoHorarioForm.register("clientes_maximos")} />
-                {tramoHorarioForm.formState.errors.clientes_maximos && (
-                  <p className="text-red-500">
-                    {tramoHorarioForm.formState.errors.clientes_maximos.message}
-                  </p>
-                )}
-              </div>
-              <Button type="submit" className="mt-4">
-                Agregar Tramo Horario
-              </Button>
-            </form>
+            ) : (
+              <p>No hay reservas</p>
+            )}
           </CardContent>
-          {tramos.length > 0 && (
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Hora Inicio</TableHead>
-                    <TableHead>Hora Final</TableHead>
-                    <TableHead>Nombre</TableHead>
-                    <TableHead>Clientes Máximos</TableHead>
-                    <TableHead>Acciones</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {tramos.map((tramo, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{tramo.h_inicio}</TableCell>
-                      <TableCell>{tramo.h_final}</TableCell>
-                      <TableCell>{tramo.nombre}</TableCell>
-                      <TableCell>{tramo.clientes_maximos}</TableCell>
-                      <TableCell>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost">
-                              <MoreVertical />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent>
-                            <DropdownMenuItem
-                              onClick={() =>
-                                deleteRecord("tramo_horario", tramo.id)
-                              }
-                            >
-                              <Trash className="h-4 w-4" color="red" />
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          )}
         </Card>
-
-        <Card className="max-h-[500px] overflow-auto">
-          <CardHeader>
-            <CardTitle>Fotos del Local</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={fotoForm.handleSubmit(handleAddFoto)}>
-              <div>
-                <label>Imagen</label>
-                <Input type="file" {...fotoForm.register("imagen")} />
-              </div>
-              <Button type="submit" className="mt-4">
-                Agregar Foto
-              </Button>
-            </form>
-          </CardContent>
-          {fotos.length > 0 && (
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Imagen</TableHead>
-                    <TableHead>Acciones</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {fotos.map((foto, index) => (
-                    <TableRow key={index}>
-                      <TableCell>
-                        <img
-                          src={"http://127.0.0.1:8000" + foto.imagen}
-                          alt={`Foto ${foto.id}`}
-                          width="50"
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost">
-                              <MoreVertical />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent>
-                            <DropdownMenuItem
-                              onClick={() =>
-                                deleteRecord("foto_local", foto.id)
-                              }
-                            >
-                              <Trash className="h-4 w-4" color="red" />
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          )}
-        </Card>
-
-        <div className="max-h-[500px]">
-          <EditarPerfil user={user} />
-        </div>
-
+        <MisReservas />
       </div>
-      <Card className="max-h-[500px] overflow-auto">
-        <CardHeader>
-          <CardTitle>Reservas</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {reservas.length > 0 ? (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Nombre de cliente</TableHead>
-                  <TableHead>Telefono de cliente</TableHead>
-                  <TableHead>Fecha</TableHead>
-                  <TableHead>Hora</TableHead>
-                  <TableHead>Estado</TableHead>
-                  <TableHead>Acciones</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {reservas.map((reserva, index) => (
-                  <TableRow key={index}>
-                    <TableCell>
-                      {reserva.usuario.first_name ? (
-                        <>
-                          {reserva.usuario.first_name}
-                          {reserva.usuario.last_name && (
-                            <> {reserva.usuario.last_name} </>
-                          )}
-                        </>
-                      ) : (
-                        <> {reserva.usuario.username} </>
-                      )}
-                    </TableCell>
-
-                    <TableCell>{reserva.usuario.tel}</TableCell>
-                    <TableCell>{reserva.fecha}</TableCell>
-                    <TableCell>{reserva.hora}</TableCell>
-                    <TableCell>
-                      <Select
-                        onValueChange={(e) => updateReservaEstado(reserva.id, e)}
-                      >
-                        <SelectTrigger>
-                          <SelectValue className="w-32" placeholder={estadoToString(reserva.estado.toString())} />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="1">Pendiente</SelectItem>
-                          <SelectItem value="2">Aceptada</SelectItem>
-                          <SelectItem value="3">Rechazada</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </TableCell>
-                    <TableCell>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost">
-                            <MoreVertical />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent>
-                          <DropdownMenuItem
-                            onClick={() => deleteRecord("reserva", reserva.id, reserva)}
-                          >
-                            <div className="grid h-10 w-10 bg-white border rounded border-red-300 place-items-center">
-                              <Trash className="h-6 w-6" color="red" />
-                            </div>
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          ) : (
-            <p>No hay reservas</p>
-          )}
-        </CardContent>
-      </Card>
-      <MisReservas />
-    </div>
+    </>
   );
 }

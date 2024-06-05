@@ -1,26 +1,20 @@
 import axios from "axios";
 import { AuthResponse } from "@/lib/interfaces";
-
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { useForm } from "react-hook-form";
 import { useState, useContext } from "react";
-
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import SelectorPrefijo from "@/components/account/SelectorPrefijo";
+import CountryCodeSelect from "@/components/account/SelectorPrefijo";
 import { Input } from "@/components/ui/input";
-
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import { Link, useNavigate } from "react-router-dom";
-
 import { Contexto } from "@/components/Auth/AuthContext";
+import env from "@/lib/env";
 
 export default function Login() {
-  const baseUrl = "http://localhost:8000/api/";
   const [countryCode, setCountryCode] = useState("34");
   const navigate = useNavigate();
   const context = useContext(Contexto);
@@ -71,7 +65,7 @@ export default function Login() {
     };
 
     axios
-      .post<AuthResponse>(baseUrl + "register", formattedValues)
+      .post<AuthResponse>(env.API_BASE_URL + env.endpoints.register, formattedValues)
       .then((res) => {
         if (res.data.token) {
           toast.success("¡Creación del usuario exitosa!");
@@ -130,7 +124,7 @@ export default function Login() {
               )}
             />
             <div className="flex gap-1 items-center">
-              <SelectorPrefijo
+              <CountryCodeSelect
                 defaultValue={"34"}
                 onValueChange={setCountryCode}
               />

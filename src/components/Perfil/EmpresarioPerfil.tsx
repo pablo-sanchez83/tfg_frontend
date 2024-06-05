@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
 import axios from "axios";
+import { useState, useEffect } from "react";
 import CrearLocalForm from "./utils/business/CrearLocalForm";
 import CrearEmpresaForm from "./utils/business/CrearEmpresaForm";
 import EditarPerfil from "./utils/EditarPerfil";
@@ -16,12 +16,12 @@ import {
   TableHeader,
 } from "@/components/ui/table";
 import MisReservas from "./utils/MisReservas";
+import env from "@/lib/env";
 
 export default function EmpresarioPerfil({ user }: { user: User }) {
   const [empresa, setEmpresa] = useState<Empresa | null>(null);
   const [locales, setLocales] = useState<Locales[]>([]);
   const [categorias, setCategorias] = useState<Categoria_Culinaria[]>([]);
-  const baseURL = "http://127.0.0.1:8000/api";
 
   useEffect(() => {
     fetchEmpresa();
@@ -36,8 +36,8 @@ export default function EmpresarioPerfil({ user }: { user: User }) {
 
   const fetchEmpresa = async () => {
     try {
-      const response = await axios.get(baseURL + "/empresas", {
-        headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+      const response = await axios.get(env.API_BASE_URL + env.endpoints.empresas, {
+        headers: { Authorization: `Token ${localStorage.getItem(env.TOKEN_KEY)}` },
       });
       if (response.data.length > 0) {
         setEmpresa(response.data[0]);
@@ -51,9 +51,9 @@ export default function EmpresarioPerfil({ user }: { user: User }) {
     try {
       if (!empresa) return;
       const response = await axios.get(
-        baseURL + "/locales/empresa/" + empresa.id,
+        env.API_BASE_URL + env.endpoints.locales + "/empresa/" + empresa.id,
         {
-          headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+          headers: { Authorization: `Token ${localStorage.getItem(env.TOKEN_KEY)}` },
         },
       );
       setLocales(response.data);
@@ -64,8 +64,8 @@ export default function EmpresarioPerfil({ user }: { user: User }) {
 
   const fetchCategoriasCulinarias = async () => {
     try {
-      const response = await axios.get(baseURL + "/categorias_culinarias", {
-        headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+      const response = await axios.get(env.API_BASE_URL + env.endpoints.categorias_culinarias, {
+        headers: { Authorization: `Token ${localStorage.getItem(env.TOKEN_KEY)}` },
       });
       setCategorias(response.data);
     } catch (error) {
@@ -75,8 +75,8 @@ export default function EmpresarioPerfil({ user }: { user: User }) {
 
   const handleDeleteLocal = async (id: number) => {
     try {
-      await axios.delete(baseURL + `/local/eliminar/${id}`, {
-        headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+      await axios.delete(env.API_BASE_URL + env.endpoints.local(id) + "/eliminar", {
+        headers: { Authorization: `Token ${localStorage.getItem(env.TOKEN_KEY)}` },
       });
       setLocales(locales.filter((local) => local.id !== id));
     } catch (error) {

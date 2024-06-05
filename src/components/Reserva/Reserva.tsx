@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Locales, TramoHorario, User } from "@/lib/interfaces";
 import { CalendarIcon, LoaderCircle } from "lucide-react";
@@ -25,6 +25,7 @@ import {
 } from "../ui/select";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import env from "@/lib/env";
 
 const Reserva: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -32,26 +33,23 @@ const Reserva: React.FC = () => {
   const [usuario, setUsuario] = useState<User | null>(null);
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:8000/api/local/${id}`)
-      .then((res) => {
-        setLocal(res.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching local data:", error);
-      });
-    axios
-      .get("http://localhost:8000/api/mi_usuario", {
-        headers: {
-          Authorization: `Token ${localStorage.getItem("token")}`,
-        },
-      })
-      .then((res) => {
-        setUsuario(res.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching user data:", error);
-      });
+    const fetchData = async () => {
+      if (id !== undefined) {
+        try {
+          const localResponse = await axios.get(env.API_BASE_URL + env.endpoints.local(Number(id)));
+          setLocal(localResponse.data);
+  
+          const userResponse = await axios.get(env.API_BASE_URL + env.endpoints.mi_usuario, {
+            headers: { Authorization: `Token ${localStorage.getItem(env.TOKEN_KEY)}` },
+          });
+          setUsuario(userResponse.data);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      }
+    };
+  
+    fetchData();
   }, [id]);
 
   const isDateEnabled = (date: Date): boolean => {
@@ -71,9 +69,7 @@ const Reserva: React.FC = () => {
         .date()
         .refine(
           (date) => date instanceof Date && !isNaN(date.getTime()) && isDateEnabled(date) && !isBefore(startOfDay(date), startOfDay(new Date())),
-          {
-            message: "Fecha inválida, el local está cerrado o la fecha es anterior a hoy",
-          }
+          { message: "Fecha inválida, el local está cerrado o la fecha es anterior a hoy" }
         ),
       hora: z
         .string()
@@ -94,15 +90,9 @@ const Reserva: React.FC = () => {
         );
         if (!tramoSeleccionado) return false;
 
-        const [horaInicio, minutoInicio] = tramoSeleccionado.h_inicio
-          .split(":")
-          .map(Number);
-        const [horaFin, minutoFin] = tramoSeleccionado.h_final
-          .split(":")
-          .map(Number);
-        const [horaSeleccionada, minutoSeleccionada] = data.hora
-          .split(":")
-          .map(Number);
+        const [horaInicio, minutoInicio] = tramoSeleccionado.h_inicio.split(":").map(Number);
+        const [horaFin, minutoFin] = tramoSeleccionado.h_final.split(":").map(Number);
+        const [horaSeleccionada, minutoSeleccionada] = data.hora.split(":").map(Number);
 
         const inicio = new Date();
         inicio.setHours(horaInicio, minutoInicio, 0);
@@ -115,9 +105,7 @@ const Reserva: React.FC = () => {
 
         return seleccionada >= inicio && seleccionada <= fin;
       },
-      {
-        message: "La hora seleccionada no está dentro del tramo horario.",
-      }
+      { message: "La hora seleccionada no está dentro del tramo horario." }
     )
     .refine(
       (data) => {
@@ -127,10 +115,7 @@ const Reserva: React.FC = () => {
         if (!tramoSeleccionado) return false;
         return data.num_personas <= tramoSeleccionado.clientes_maximos;
       },
-      {
-        message:
-          "El número de personas excede el máximo permitido para el tramo horario seleccionado.",
-      }
+      { message: "El número de personas excede el máximo permitido para el tramo horario seleccionado." }
     );
 
   type ReservaSchema = z.infer<typeof reservaSchema>;
@@ -154,10 +139,10 @@ const Reserva: React.FC = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:8000/api/reserva/crear`,
+        env.API_BASE_URL + env.endpoints.crear_reserva,
         reservaData,
         {
-          headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+          headers: { Authorization: `Token ${localStorage.getItem(env.TOKEN_KEY)}` },
         }
       );
       console.log("Reserva realizada:", response.data);
@@ -178,12 +163,7 @@ const Reserva: React.FC = () => {
   };
 
   return (
-    <div
-      className={
-        styles.fondo +
-        " rounded border border-black m-10 w-full h-full bg-re flex justify-center items-center relative"
-      }
-    >
+    <div className={`${styles.fondo} rounded border border-black m-10 w-full h-full bg-re flex justify-center items-center relative`}>
       <ToastContainer />
       {local ? (
         <section className="border border-white rounded p-10 bg-white shadow-lg shadow-[#000000]">
@@ -193,9 +173,7 @@ const Reserva: React.FC = () => {
               onSubmit={reservaForm.handleSubmit(onSubmit, handleError)}
               className="min-w-full flex flex-col gap-4 items-center justify-center py-2 h-full"
             >
-              <h1>
-                <b>Reserva</b>
-              </h1>
+              <h1><b>Reserva</b></h1>
               <FormField
                 control={reservaForm.control}
                 name="fecha"
@@ -211,11 +189,7 @@ const Reserva: React.FC = () => {
                               !field.value && "text-muted-foreground"
                             )}
                           >
-                            {field.value ? (
-                              format(field.value, "dd/MM/yyyy", { locale: es })
-                            ) : (
-                              <span>Elige una fecha</span>
-                            )}
+                            {field.value ? format(field.value, "dd/MM/yyyy", { locale: es }) : <span>Elige una fecha</span>}
                             <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                           </Button>
                         </FormControl>
@@ -232,12 +206,7 @@ const Reserva: React.FC = () => {
                       </PopoverContent>
                     </Popover>
                     {reservaForm.formState.errors.fecha && (
-                      <p className="text-red-500">
-                        {
-                          reservaForm.formState.errors.fecha
-                            .message as React.ReactNode
-                        }
-                      </p>
+                      <p className="text-red-500">{reservaForm.formState.errors.fecha.message as React.ReactNode}</p>
                     )}
                   </FormItem>
                 )}
@@ -257,20 +226,14 @@ const Reserva: React.FC = () => {
                         {local?.tramos_horarios.map(
                           (tramo: TramoHorario, index) => (
                             <SelectItem key={index} value={tramo.id.toString()}>
-                              {tramo.nombre} - {tramo.h_inicio} -{" "}
-                              {tramo.h_final}
+                              {tramo.nombre} - {tramo.h_inicio} - {tramo.h_final}
                             </SelectItem>
                           )
                         )}
                       </SelectContent>
                     </Select>
                     {reservaForm.formState.errors.tramo_horario && (
-                      <p className="text-red-500">
-                        {
-                          reservaForm.formState.errors.tramo_horario
-                            .message as React.ReactNode
-                        }
-                      </p>
+                      <p className="text-red-500">{reservaForm.formState.errors.tramo_horario.message as React.ReactNode}</p>
                     )}
                   </FormItem>
                 )}
@@ -281,20 +244,10 @@ const Reserva: React.FC = () => {
                 render={({ field }) => (
                   <FormItem className={styles.inputContainer}>
                     <FormControl>
-                      <Input
-                        className="w-full"
-                        type="time"
-                        placeholder="Hora"
-                        {...field}
-                      />
+                      <Input className="w-full" type="time" placeholder="Hora" {...field} />
                     </FormControl>
                     {reservaForm.formState.errors.hora && (
-                      <p className="text-red-500">
-                        {
-                          reservaForm.formState.errors.hora
-                            .message as React.ReactNode
-                        }
-                      </p>
+                      <p className="text-red-500">{reservaForm.formState.errors.hora.message as React.ReactNode}</p>
                     )}
                   </FormItem>
                 )}
@@ -308,12 +261,7 @@ const Reserva: React.FC = () => {
                       <Input type="number" placeholder="Personas" {...field} />
                     </FormControl>
                     {reservaForm.formState.errors.num_personas && (
-                      <p className="text-red-500">
-                        {
-                          reservaForm.formState.errors.num_personas
-                            .message as React.ReactNode
-                        }
-                      </p>
+                      <p className="text-red-500">{reservaForm.formState.errors.num_personas.message as React.ReactNode}</p>
                     )}
                   </FormItem>
                 )}

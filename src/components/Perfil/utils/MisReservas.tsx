@@ -1,22 +1,21 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DropdownMenu, DropdownMenuItem, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Reservas } from "@/lib/interfaces";
 import { estadoToString } from "@/lib/utils";
-import axios from "axios";
 import { format } from "date-fns";
 import { MoreVertical } from "lucide-react";
-import { useEffect, useState } from "react";
+import env from "@/lib/env";
 
 export default function MisReservas() {
     const [reservas, setReservas] = useState<Reservas[]>([]);
 
-    const baseURL = "http://127.0.0.1:8000/api";
-
     const fetchReservas = async () => {
         try {
-            const response = await axios.get(baseURL + "/mis_reservas", {
-                headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+            const response = await axios.get(env.API_BASE_URL + env.endpoints.reservas, {
+                headers: { Authorization: `Token ${localStorage.getItem(env.TOKEN_KEY)}` },
             });
             setReservas(response.data);
             console.log(response.data);
@@ -32,14 +31,14 @@ export default function MisReservas() {
     const handleEliminarReserva = async (id: number) => {
         try {
             await axios.patch(
-                baseURL + `/cancelar_reserva/${id}`,
+                env.API_BASE_URL + env.endpoints.cancelar_reserva(id),
                 {},
                 {
-                    headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+                    headers: { Authorization: `Token ${localStorage.getItem(env.TOKEN_KEY)}` },
                 },
             );
-            await axios.delete(baseURL + `/eliminar_reserva/${id}`, {
-                headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+            await axios.delete(env.API_BASE_URL + env.endpoints.eliminar_reserva(id), {
+                headers: { Authorization: `Token ${localStorage.getItem(env.TOKEN_KEY)}` },
             });
             location.reload();
             fetchReservas();

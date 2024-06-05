@@ -1,10 +1,11 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { User } from "@/lib/interfaces";
 import AdminPerfil from "./AdminPerfil";
 import ClientePerfil from "./ClientePerfil";
 import EmpresarioPerfil from "./EmpresarioPerfil";
 import EncargadoPerfil from "./EncargadoPerfil";
+import env from "@/lib/env";
 
 export default function Perfil() {
   const [perfil, setPerfil] = useState<User | null>(null);
@@ -12,13 +13,13 @@ export default function Perfil() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem(env.TOKEN_KEY);
         if (!token) {
           throw new Error("No token found");
         }
 
         const response = await axios.get(
-          "http://127.0.0.1:8000/api/mi_usuario",
+          env.API_BASE_URL + env.endpoints.mi_usuario,
           {
             headers: { Authorization: `Token ${token}` },
           },

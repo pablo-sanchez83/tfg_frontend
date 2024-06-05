@@ -7,6 +7,7 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { User } from "@/lib/interfaces";
+import env from "@/lib/env";
 
 const createEmpresaSchema = z.object({
   nombre: z.string().max(100),
@@ -30,8 +31,8 @@ export default function CrearEmpresaForm({
     formData.append("nombre", data.nombre);
     formData.append("usuario", user.id.toString());
     try {
-      await axios.post("http://127.0.0.1:8000/api/empresas", formData, {
-        headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+      await axios.post(env.API_BASE_URL + env.endpoints.empresas, formData, {
+        headers: { Authorization: `Token ${localStorage.getItem(env.TOKEN_KEY)}` },
       });
       fetchEmpresa();
     } catch (error) {

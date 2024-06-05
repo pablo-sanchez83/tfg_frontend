@@ -15,6 +15,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import env from "@/lib/env";
 
 interface UserProfileFormProps {
   user: User;
@@ -70,8 +71,8 @@ export default function EditarPerfil({ user }: UserProfileFormProps) {
   // Función para manejar la actualización del usuario
   const onSubmit = async (data: z.infer<typeof editUserSchema>) => {
     try {
-      await axios.patch("http://127.0.0.1:8000/api/mi_usuario", data, {
-        headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+      await axios.patch(env.API_BASE_URL + env.endpoints.mi_usuario, data, {
+        headers: { Authorization: `Token ${localStorage.getItem(env.TOKEN_KEY)}` },
       });
     } catch (error) {
       console.error("Error updating user information:", error);
@@ -81,8 +82,8 @@ export default function EditarPerfil({ user }: UserProfileFormProps) {
   // Función para manejar la actualización de la contraseña
   const editPassword = async (data: z.infer<typeof editPasswordSchema>) => {
     await axios
-      .patch("http://127.0.0.1:8000/api/mi_usuario", data, {
-        headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+      .patch(env.API_BASE_URL + env.endpoints.mi_usuario, data, {
+        headers: { Authorization: `Token ${localStorage.getItem(env.TOKEN_KEY)}` },
       })
       .then(() => {
         editPasswordForm.reset();

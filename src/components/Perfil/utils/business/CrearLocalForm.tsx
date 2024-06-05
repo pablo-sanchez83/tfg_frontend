@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Categoria_Culinaria, Empresa } from "@/lib/interfaces";
+import env from "@/lib/env";
 
 interface CreateLocalFormProps {
   categorias: Categoria_Culinaria[];
@@ -72,7 +73,7 @@ export default function CrearLocalForm({
     console.log("Datos del formulario:", data); // Depuración
     try {
       const encargadoResponse = await axios.post(
-        "http://127.0.0.1:8000/api/register",
+        env.API_BASE_URL + env.endpoints.register,
         {
           username: data.encargado_username,
           email: data.encargado_email,
@@ -96,10 +97,10 @@ export default function CrearLocalForm({
       console.log("Datos para crear local:", localData); // Depuración antes de enviar
 
       const localResponse = await axios.post(
-        "http://127.0.0.1:8000/api/crear_local",
+        env.API_BASE_URL + env.endpoints.locales,
         localData,
         {
-          headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+          headers: { Authorization: `Token ${localStorage.getItem(env.TOKEN_KEY)}` },
         },
       );
 

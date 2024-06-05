@@ -1,32 +1,40 @@
-import { ContextoProps } from "@/lib/interfaces";
-import axios from "axios";
-import { createContext, useState, useEffect, useCallback } from "react";
+import { createContext, useState, ReactNode, useEffect } from "react";
+import env from "@/lib/env";
 
-export const Contexto = createContext<ContextoProps | undefined>(undefined);
-export const Proveedor = ({ children }: { children: React.ReactNode }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+interface AuthContextProps {
+  isLoggedIn: boolean;
+  login: (token: string) => void;
+  logout: () => void;
+}
 
-  const checkToken = useCallback(() => {
-    const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token);
-  }, []);
+const initialAuthContext: AuthContextProps = {
+  isLoggedIn: false,
+  login: () => {},
+  logout: () => {},
+};
+
+export const Contexto = createContext<AuthContextProps>(initialAuthContext);
+
+export const Proveedor = ({ children }: { children: ReactNode }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   useEffect(() => {
-    checkToken();
-    window.addEventListener("storage", checkToken);
-    return () => {
-      window.removeEventListener("storage", checkToken);
-    };
-  }, [checkToken]);
+    const token = localStorage.getItem(env.TOKEN_KEY);
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
   const login = (token: string) => {
-    localStorage.setItem("token", token);
+    localStorage.setItem(env.TOKEN_KEY, token);
     setIsLoggedIn(true);
   };
+
   const logout = () => {
-    axios.get("http://127.0.0.1:8000/api/logout");
-    localStorage.removeItem("token");
+    localStorage.removeItem(env.TOKEN_KEY);
     setIsLoggedIn(false);
   };
+
   return (
     <Contexto.Provider value={{ isLoggedIn, login, logout }}>
       {children}
