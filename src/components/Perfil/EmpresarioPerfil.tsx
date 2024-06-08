@@ -85,8 +85,8 @@ export default function EmpresarioPerfil({ user }: { user: User }) {
   };
 
   return (
-    <div className="flex gap-4 w-full m-3">
-      <div className="flex flex-col gap-4 w-3/4">
+    <div className="flex flex-col lg:flex-row gap-4 w-full m-3">
+      <div className="flex flex-col gap-4 w-full lg:w-3/4">
         {empresa ? (
           empresa.confirmado ? (
             <div className="flex flex-col gap-4 w-full">
@@ -101,7 +101,7 @@ export default function EmpresarioPerfil({ user }: { user: User }) {
                 </CardHeader>
                 <CardContent>
                   {locales.length > 0 ? (
-                    <Table>
+                    <Table className="min-w-full">
                       <TableHeader>
                         <TableRow>
                           <TableHead>Nombre</TableHead>
@@ -140,7 +140,7 @@ export default function EmpresarioPerfil({ user }: { user: User }) {
         )}
         <MisReservas />
       </div>
-      <div className="w-1/4 flex flex-col gap-4">
+      <div className="w-full lg:w-1/4 flex flex-col gap-4">
         <EditarPerfil user={user} />
         {empresa && (
           <Card>

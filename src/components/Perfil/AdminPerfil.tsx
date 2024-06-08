@@ -22,7 +22,6 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-
 export default function AdminPerfil({ user }: { user: User }) {
   const [users, setUsers] = useState<User[]>([]);
   const [empresas, setEmpresas] = useState<Empresa[]>([]);
@@ -46,7 +45,6 @@ export default function AdminPerfil({ user }: { user: User }) {
       descripcion: "",
     },
   });
-
 
   const fetchUsers = async () => {
     try {
@@ -132,6 +130,7 @@ export default function AdminPerfil({ user }: { user: User }) {
       console.error("Error updating confirmado:", error);
     }
   };
+
   const onCreateCategory = async (values: z.infer<typeof categoriaCulinariaSchema>) => {
     try {
       await axios.post(env.API_BASE_URL + env.endpoints.categorias_culinarias, values, {
@@ -141,17 +140,17 @@ export default function AdminPerfil({ user }: { user: User }) {
     } catch (error) {
       console.error("Error creating category:", error);
     }
-  }
+  };
 
   return (
-    <div className="flex gap-4 w-full h-full">
-      <div className="ml-4 flex flex-col gap-4 w-3/4 h-[80vh]">
+    <div className="flex flex-col lg:flex-row gap-4 w-full h-full">
+      <div className="flex flex-col gap-4 w-full lg:w-3/4 h-[80vh]">
         <Card className="flex-1 overflow-auto">
           <CardHeader>
             <CardTitle>Usuarios</CardTitle>
           </CardHeader>
           <CardContent>
-            <Table>
+            <Table className="min-w-full">
               <TableHeader>
                 <TableRow>
                   <TableHead>Username</TableHead>
@@ -181,7 +180,7 @@ export default function AdminPerfil({ user }: { user: User }) {
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={8}>No hay usuarios</TableCell>
+                    <TableCell colSpan={5}>No hay usuarios</TableCell>
                   </TableRow>
                 )}
               </TableBody>
@@ -193,7 +192,7 @@ export default function AdminPerfil({ user }: { user: User }) {
             <CardTitle>Empresas</CardTitle>
           </CardHeader>
           <CardContent>
-            <Table>
+            <Table className="min-w-full">
               <TableHeader>
                 <TableRow>
                   <TableHead>Nombre</TableHead>
@@ -245,10 +244,12 @@ export default function AdminPerfil({ user }: { user: User }) {
             <CardTitle>Categorias culinarias</CardTitle>
           </CardHeader>
           <CardContent>
-            <Table>
+            <Table className="min-w-full">
               <TableHeader>
-                <TableHead>Nombre</TableHead>
-                <TableHead></TableHead>
+                <TableRow>
+                  <TableHead>Nombre</TableHead>
+                  <TableHead></TableHead>
+                </TableRow>
               </TableHeader>
               <TableBody>
                 {categoriasCulinarias.length > 0 ? (
@@ -267,7 +268,7 @@ export default function AdminPerfil({ user }: { user: User }) {
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={1}>No hay categorías culinarias</TableCell>
+                    <TableCell colSpan={2}>No hay categorías culinarias</TableCell>
                   </TableRow>
                 )}
               </TableBody>
@@ -275,7 +276,7 @@ export default function AdminPerfil({ user }: { user: User }) {
           </CardContent>
         </Card>
       </div>
-      <div className="w-1/4">
+      <div className="w-full lg:w-1/4">
         <EditarPerfil user={user} />
         <Card className="flex-1 overflow-auto">
           <CardHeader>
