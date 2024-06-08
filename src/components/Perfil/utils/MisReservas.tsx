@@ -14,11 +14,10 @@ export default function MisReservas() {
 
     const fetchReservas = async () => {
         try {
-            const response = await axios.get(env.API_BASE_URL + env.endpoints.reservas, {
+            const response = await axios.get(env.API_BASE_URL + env.endpoints.mis_reservas, {
                 headers: { Authorization: `Token ${localStorage.getItem(env.TOKEN_KEY)}` },
             });
             setReservas(response.data);
-            console.log(response.data);
         } catch (error) {
             console.error("Error fetching reservas:", error);
         }

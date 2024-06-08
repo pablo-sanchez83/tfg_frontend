@@ -135,17 +135,14 @@ const Reserva: React.FC = () => {
       estado: 1,
     };
 
-    console.log("Datos de la reserva que se envían:", reservaData);
-
     try {
-      const response = await axios.post(
+      await axios.post(
         env.API_BASE_URL + env.endpoints.crear_reserva,
         reservaData,
         {
           headers: { Authorization: `Token ${localStorage.getItem(env.TOKEN_KEY)}` },
         }
       );
-      console.log("Reserva realizada:", response.data);
       toast.success("Reserva realizada con éxito");
       setTimeout(() => {
         window.location.href = "/";
@@ -194,7 +191,7 @@ const Reserva: React.FC = () => {
                           </Button>
                         </FormControl>
                       </PopoverTrigger>
-                      <PopoverContent className="w-full p-0 bg-white border border-gray-300 rounded shadow-lg">
+                      <PopoverContent className="z-20 w-full p-0 bg-white border border-gray-300 rounded shadow-lg">
                         <Calendar
                           mode="single"
                           selected={field.value}
@@ -219,7 +216,7 @@ const Reserva: React.FC = () => {
                     <Select onValueChange={field.onChange}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Tramo horario" />
+                          <SelectValue className="z-10" placeholder="Tramo horario" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>

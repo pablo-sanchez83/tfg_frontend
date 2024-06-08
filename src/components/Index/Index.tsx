@@ -23,6 +23,7 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select";
+import env from "@/lib/env";
 
 export default function Index() {
   const [locales, setLocales] = useState<Locales[]>([]);
@@ -38,19 +39,19 @@ export default function Index() {
         setLocales(res.data);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
 
     // Fetch categorias culinarias
     axios
       .get<Categoria_Culinaria[]>(
-        "http://localhost:8000/api/categorias_culinarias",
+        env.API_BASE_URL + env.endpoints.categorias_culinarias
       )
       .then((res) => {
         setCategorias(res.data);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   }, []);
 
@@ -62,15 +63,15 @@ export default function Index() {
     categoriaSeleccionada !== "todas"
       ? locales.filter(
           (local) =>
-            local.categoria_culinaria.id === parseInt(categoriaSeleccionada),
+            local.categoria_culinaria.id === parseInt(categoriaSeleccionada)
         )
       : locales;
 
   return (
-    <main className="flex flex-col">
-      <div className="flex justify-center my-4 w-fit justify-self-end">
+    <main className="flex flex-col items-center">
+      <div className="flex justify-center my-4 w-full max-w-md">
         <Select onValueChange={handleCategoriaChange}>
-          <SelectTrigger className="p-2 border rounded">
+          <SelectTrigger className="p-2 border rounded w-full">
             <SelectValue placeholder="Todas las categorías" />
           </SelectTrigger>
           <SelectContent>
@@ -83,54 +84,58 @@ export default function Index() {
           </SelectContent>
         </Select>
       </div>
-      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {localesFiltrados.map((local, index) => (
-          <Card key={index} className="max-w-sm h-fit rounded shadow-lg m-4">
-            <CardHeader>
-              <Carousel className="w-full max-w-xs">
-                <CarouselContent>
-                  {local.fotos.map((foto, index) => (
-                    <CarouselItem key={index}>
-                      <img
-                        className="max-h-60 min-h-56"
-                        src={"http://localhost:8000/" + foto.imagen}
-                        alt="Imagen del local"
-                      />
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
-              </Carousel>
-            </CardHeader>
-            <CardContent>
-              <div className="font-bold text-xl mb-2">
-                {local.nombre || "Nombre no disponible"}
-              </div>
-              <p className="text-gray-700 text-base">{local.direccion}</p>
-              <p className="text-gray-700 text-base">
-                {local.categoria_culinaria.nombre}
-              </p>
-              <p className="text-gray-700 text-base">
-                {local.categoria_culinaria.descripcion}
-              </p>
-            </CardContent>
-            <CardFooter className="justify-between gap-3">
-              <Link
-                to={`/locales/${local.id}`}
-                className="p-2 grid place-items-center rounded duration-100 hover:scale-110 text-white w-full bg-[#e67e22] font-bold uppercase hover:bg-white hover:text-[#e67e22] hover:border-[#e67e22] hover:border"
-              >
-                Ver más
-              </Link>
-              <Link
-                to={`/reservar/${local.id}`}
-                className="p-2 grid place-items-center rounded duration-100 hover:scale-110 w-full hover:bg-[#e67e22] font-bold uppercase border-[#e67e22] border bg-white text-[#e67e22] hover:text-white"
-              >
-                Reservar
-              </Link>
-            </CardFooter>
-          </Card>
-        ))}
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full">
+        {localesFiltrados.length > 0 ? (
+          localesFiltrados.map((local, index) => (
+            <Card key={index} className="max-w-sm h-fit rounded shadow-lg m-4">
+              <CardHeader>
+                <Carousel className="w-full max-w-xs">
+                  <CarouselContent>
+                    {local.fotos.map((foto, index) => (
+                      <CarouselItem key={index}>
+                        <img
+                          className="max-h-60 min-h-56"
+                          src={"http://localhost:8000/" + foto.imagen}
+                          alt="Imagen del local"
+                        />
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious />
+                  <CarouselNext />
+                </Carousel>
+              </CardHeader>
+              <CardContent>
+                <div className="font-bold text-xl mb-2">
+                  {local.nombre || "Nombre no disponible"}
+                </div>
+                <p className="text-gray-700 text-base">{local.direccion}</p>
+                <p className="text-gray-700 text-base">
+                  {local.categoria_culinaria.nombre}
+                </p>
+                <p className="text-gray-700 text-base">
+                  {local.categoria_culinaria.descripcion}
+                </p>
+              </CardContent>
+              <CardFooter className="justify-between gap-3">
+                <Link
+                  to={`/locales/${local.id}`}
+                  className="p-2 grid place-items-center rounded duration-100 hover:scale-110 text-white w-full bg-[#e67e22] font-bold uppercase hover:bg-white hover:text-[#e67e22] hover:border-[#e67e22] hover:border"
+                >
+                  Ver más
+                </Link>
+                <Link
+                  to={`/reservar/${local.id}`}
+                  className="p-2 grid place-items-center rounded duration-100 hover:scale-110 w-full hover:bg-[#e67e22] font-bold uppercase border-[#e67e22] border bg-white text-[#e67e22] hover:text-white"
+                >
+                  Reservar
+                </Link>
+              </CardFooter>
+            </Card>
+          ))
+        ) : (
+          <p className="text-center w-full">No hay locales en esta categoría</p>
+        )}
       </div>
     </main>
   );

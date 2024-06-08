@@ -84,7 +84,7 @@ export default function Login() {
       })
       .catch((err) => {
         toast.error("¡Creación del usuario fallida!");
-        console.log(err);
+        console.error(err);
       });
   }
 
@@ -113,7 +113,7 @@ export default function Login() {
       })
       .catch((err) => {
         toast.error("¡Inicio de sesión fallido!");
-        console.log(err);
+        console.error(err);
       });
   };
 

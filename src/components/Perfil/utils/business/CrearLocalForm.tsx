@@ -70,7 +70,6 @@ export default function CrearLocalForm({
   });
 
   const handleCreateLocal = async (data: z.infer<typeof createLocalSchema>) => {
-    console.log("Datos del formulario:", data); // Depuración
     try {
       const encargadoResponse = await axios.post(
         env.API_BASE_URL + env.endpoints.register,
@@ -84,7 +83,6 @@ export default function CrearLocalForm({
         },
       );
       const encargado = encargadoResponse.data.user;
-      console.log("Encargado creado:", encargado); // Depuración
 
       const localData = {
         nombre: data.nombre,
@@ -94,17 +92,14 @@ export default function CrearLocalForm({
         usuario: encargado.id, // Asegúrate de pasar el ID del encargado creado
       };
 
-      console.log("Datos para crear local:", localData); // Depuración antes de enviar
-
-      const localResponse = await axios.post(
-        env.API_BASE_URL + env.endpoints.locales,
+      await axios.post(
+        env.API_BASE_URL + env.endpoints.crear_local,
         localData,
         {
           headers: { Authorization: `Token ${localStorage.getItem(env.TOKEN_KEY)}` },
         },
       );
 
-      console.log("Local creado:", localResponse.data); // Depuración
       fetchLocales();
     } catch (error) {
       if (axios.isAxiosError(error)) {
