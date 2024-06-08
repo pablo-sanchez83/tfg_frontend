@@ -11,19 +11,42 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Trash } from "lucide-react";
-import { Empresa, User } from "@/lib/interfaces";
+import { Categoria_Culinaria, Empresa, User } from "@/lib/interfaces";
 import EditarPerfil from "./utils/EditarPerfil";
 import MisReservas from "./utils/MisReservas";
 import env from "@/lib/env";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import z from "zod";
+import { Form, FormControl, FormField, FormItem } from "../ui/form";
+import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
+
 
 export default function AdminPerfil({ user }: { user: User }) {
   const [users, setUsers] = useState<User[]>([]);
   const [empresas, setEmpresas] = useState<Empresa[]>([]);
+  const [categoriasCulinarias, setCategoriasCulinarias] = useState<Categoria_Culinaria[]>([]);
 
   useEffect(() => {
     fetchUsers();
     fetchEmpresas();
+    fetchCategoriasCulinarias();
   }, []);
+
+  const categoriaCulinariaSchema = z.object({
+    nombre: z.string().min(1, { message: "El nombre es obligatorio" }),
+    descripcion: z.string().min(10, { message: "La descripción es obligatoria" }),
+  });
+
+  const categoriaCulinariaForm = useForm<z.infer<typeof categoriaCulinariaSchema>>({
+    resolver: zodResolver(categoriaCulinariaSchema),
+    defaultValues: {
+      nombre: "",
+      descripcion: "",
+    },
+  });
+
 
   const fetchUsers = async () => {
     try {
@@ -44,6 +67,17 @@ export default function AdminPerfil({ user }: { user: User }) {
       setEmpresas(response.data);
     } catch (error) {
       console.error("Error fetching empresas:", error);
+    }
+  };
+
+  const fetchCategoriasCulinarias = async () => {
+    try {
+      const response = await axios.get(env.API_BASE_URL + env.endpoints.categorias_culinarias, {
+        headers: { Authorization: `Token ${localStorage.getItem(env.TOKEN_KEY)}` },
+      });
+      setCategoriasCulinarias(response.data);
+    } catch (error) {
+      console.error("Error fetching categorias culinarias:", error);
     }
   };
 
@@ -69,6 +103,17 @@ export default function AdminPerfil({ user }: { user: User }) {
     }
   };
 
+  const handleDeleteCategoriaCulinaria = async (id: number) => {
+    try {
+      await axios.delete(env.API_BASE_URL + env.endpoints.categoria_culinaria(id), {
+        headers: { Authorization: `Token ${localStorage.getItem(env.TOKEN_KEY)}` },
+      });
+      setCategoriasCulinarias(categoriasCulinarias.filter((categoria) => categoria.id !== id));
+    } catch (error) {
+      console.error("Error deleting categoria culinaria:", error);
+    }
+  };
+
   const handleToggleConfirmado = async (id: number, confirmado: boolean) => {
     try {
       await axios.patch(
@@ -87,6 +132,16 @@ export default function AdminPerfil({ user }: { user: User }) {
       console.error("Error updating confirmado:", error);
     }
   };
+  const onCreateCategory = async (values: z.infer<typeof categoriaCulinariaSchema>) => {
+    try {
+      await axios.post(env.API_BASE_URL + env.endpoints.categorias_culinarias, values, {
+        headers: { Authorization: `Token ${localStorage.getItem(env.TOKEN_KEY)}` },
+      });
+      fetchCategoriasCulinarias();
+    } catch (error) {
+      console.error("Error creating category:", error);
+    }
+  }
 
   return (
     <div className="flex gap-4 w-full h-full">
@@ -185,9 +240,94 @@ export default function AdminPerfil({ user }: { user: User }) {
           </CardContent>
         </Card>
         <MisReservas />
+        <Card className="flex-1 overflow-auto">
+          <CardHeader>
+            <CardTitle>Categorias culinarias</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableHead>Nombre</TableHead>
+                <TableHead></TableHead>
+              </TableHeader>
+              <TableBody>
+                {categoriasCulinarias.length > 0 ? (
+                  categoriasCulinarias.map((category, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{category.nombre}</TableCell>
+                      <TableCell>
+                        <Button
+                          className="bg-red-500"
+                          onClick={() => handleDeleteCategoriaCulinaria(category.id)}
+                        >
+                          <Trash />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={1}>No hay categorías culinarias</TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
       </div>
       <div className="w-1/4">
         <EditarPerfil user={user} />
+        <Card className="flex-1 overflow-auto">
+          <CardHeader>
+            <CardTitle>Crear categoría culinaria</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Form {...categoriaCulinariaForm}>
+              <form onSubmit={categoriaCulinariaForm.handleSubmit(onCreateCategory)} className="space-y-3">
+                <FormField
+                  control={categoriaCulinariaForm.control}
+                  name="nombre"
+                  render={({ field }) => (
+                    <FormItem >
+                      <FormControl>
+                        <Input
+                          type="text"
+                          placeholder="Nombre"
+                          {...field}
+                        />
+                      </FormControl>
+                      {categoriaCulinariaForm.formState.errors.nombre && (
+                        <p className="text-red-500">
+                          {categoriaCulinariaForm.formState.errors.nombre.message}
+                        </p>
+                      )}
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={categoriaCulinariaForm.control}
+                  name="descripcion"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Descripción"
+                          {...field}
+                        />
+                      </FormControl>
+                      {categoriaCulinariaForm.formState.errors.descripcion && (
+                        <p className="text-red-500">
+                          {categoriaCulinariaForm.formState.errors.descripcion.message}
+                        </p>
+                      )}
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit">Crear</Button>
+              </form>
+            </Form>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
