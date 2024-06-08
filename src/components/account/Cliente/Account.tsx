@@ -20,9 +20,9 @@ import styles from "./account.module.css";
 import { Link, useNavigate } from "react-router-dom";
 
 import { Contexto } from "@/components/Auth/AuthContext";
+import env from "@/lib/env";
 
 export default function Login() {
-  const baseUrl = "http://localhost:8000/api/";
   const [isSignUp, setIsSignUp] = useState(false);
   const [countryCode, setCountryCode] = useState("34");
   const navigate = useNavigate();
@@ -74,7 +74,7 @@ export default function Login() {
     };
 
     axios
-      .post<AuthResponse>(baseUrl + "register", formattedValues)
+      .post<AuthResponse>(env.API_BASE_URL + env.endpoints.register, formattedValues)
       .then((res) => {
         if (res.data.token) {
           toast.success("¡Creación del usuario exitosa!");
@@ -103,7 +103,7 @@ export default function Login() {
 
   const onLogin = (values: z.infer<typeof loginSchema>) => {
     axios
-      .post<AuthResponse>(baseUrl + "login", values)
+      .post<AuthResponse>(env.API_BASE_URL + env.endpoints.login, values)
       .then((res) => {
         if (res.data.token) {
           toast.success("¡Inicio de sesión exitoso!");

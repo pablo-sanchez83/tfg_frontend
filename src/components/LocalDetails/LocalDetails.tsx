@@ -17,7 +17,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Contexto } from "../Auth/AuthContext";
+import { Contexto } from "@/components/Auth/AuthContext";
 import { Textarea } from "@/components/ui/textarea";
 import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";

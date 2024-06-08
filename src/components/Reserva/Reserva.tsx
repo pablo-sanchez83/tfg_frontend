@@ -3,15 +3,15 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Locales, TramoHorario, User } from "@/lib/interfaces";
 import { CalendarIcon, LoaderCircle } from "lucide-react";
-import { Form, FormControl, FormField, FormItem } from "../ui/form";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { z } from "zod";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Popover, PopoverTrigger } from "../ui/popover";
+import { Popover, PopoverTrigger } from "@/components/ui/popover";
 import { PopoverContent } from "@radix-ui/react-popover";
-import { Calendar } from "../ui/calendar";
+import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { es } from "date-fns/locale";
 import { format, isBefore, startOfDay } from "date-fns";
@@ -22,7 +22,7 @@ import {
   SelectValue,
   SelectItem,
   SelectTrigger,
-} from "../ui/select";
+} from "@/components/ui/select";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import env from "@/lib/env";

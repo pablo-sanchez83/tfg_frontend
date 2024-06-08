@@ -1,11 +1,12 @@
 const env = {
-  API_BASE_URL: "http://127.0.0.1:8000/api",
+  API_BASE_URL: "https://web-production-6e7ec.up.railway.app/api",
   TOKEN_KEY: "token",
   endpoints: {
     login: "/login",
     logout: "/logout",
     register: "/register",
     mi_usuario: "/mi_usuario",
+    mi_local: "/mi_local",
     usuarios: "/usuarios",
     empresas: "/empresas",
     locales: "/locales",
@@ -18,6 +19,8 @@ const env = {
     empresa: (id: number) => `/empresa/${id}`,
     local: (id: number) => `/local/${id}`,
     categoria_culinaria: (id: number) => `/categoria_culinaria/${id}`,
+    reservas_local: (id: number) => `/reservas/local/${id}`,
+    reserva_local: (idReserva: number, idLocal: number) => `/reserva/${idReserva}/local/${idLocal}`,
     productos: "/productos",
     horarios: "/horarios",
     crear_local: "/crear_local",

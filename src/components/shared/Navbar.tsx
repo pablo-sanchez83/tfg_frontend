@@ -1,6 +1,6 @@
 import { MdiChefHat } from "@/assets/ChefIcon";
 import { useState, useContext, useEffect } from "react";
-import { Contexto } from "../Auth/AuthContext";
+import { Contexto } from "@/components/Auth/AuthContext";
 import { LogOut, UserRound } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 

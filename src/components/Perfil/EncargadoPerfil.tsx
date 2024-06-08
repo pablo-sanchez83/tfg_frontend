@@ -41,6 +41,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { estadoToString } from "@/lib/utils";
+import env from "@/lib/env";
 
 const localSchema = z.object({
   nombre: z.string().max(100),
@@ -89,7 +90,6 @@ export default function EncargadoPerfil({ user }: { user: User }) {
   const [tramos, setTramos] = useState<TramoHorario[]>([]);
   const [reservas, setReservas] = useState<Reservas[]>([]);
   const [fotos, setFotos] = useState<FotoLocal[]>([]);
-  const baseURL = "http://127.0.0.1:8000/api";
 
   const localForm = useForm<z.infer<typeof localSchema>>({
     resolver: zodResolver(localSchema),
@@ -160,7 +160,7 @@ export default function EncargadoPerfil({ user }: { user: User }) {
 
   const fetchLocal = async () => {
     try {
-      const response = await axios.get(`${baseURL}/mi_local`, {
+      const response = await axios.get(env.API_BASE_URL + env.endpoints.mi_local, {
         headers: { "Authorization": `Token ${localStorage.getItem("token")}` },
       });
       setLocal(response.data);
@@ -176,7 +176,7 @@ export default function EncargadoPerfil({ user }: { user: User }) {
 
   const fetchProductos = async () => {
     try {
-      const response = await axios.get(`${baseURL}/productos`, {
+      const response = await axios.get(env.API_BASE_URL + env.endpoints.productos, {
         headers: { "Authorization": `Token ${localStorage.getItem("token")}` },
       });
       setProductos(response.data);
@@ -187,7 +187,7 @@ export default function EncargadoPerfil({ user }: { user: User }) {
 
   const fetchHorarios = async () => {
     try {
-      const response = await axios.get(`${baseURL}/horarios`, {
+      const response = await axios.get(env.API_BASE_URL + env.endpoints.horarios, {
         headers: { "Authorization": `Token ${localStorage.getItem("token")}` },
       });
       setHorarios(response.data);
@@ -198,7 +198,7 @@ export default function EncargadoPerfil({ user }: { user: User }) {
 
   const fetchTramos = async () => {
     try {
-      const response = await axios.get(`${baseURL}/tramos_horarios`, {
+      const response = await axios.get(env.API_BASE_URL + env.endpoints.tramos_horarios, {
         headers: { "Authorization": `Token ${localStorage.getItem("token")}` },
       });
       setTramos(response.data);
@@ -209,7 +209,7 @@ export default function EncargadoPerfil({ user }: { user: User }) {
 
   const fetchReservas = async (localId: number) => {
     try {
-      const response = await axios.get(`${baseURL}/reservas/local/${localId}`, {
+      const response = await axios.get(env.API_BASE_URL + env.endpoints.reservas_local(localId), {
         headers: { "Authorization": `Token ${localStorage.getItem("token")}` },
       });
       setReservas(response.data);
@@ -222,7 +222,7 @@ export default function EncargadoPerfil({ user }: { user: User }) {
     data,
   ) => {
     try {
-      await axios.patch(`${baseURL}/local/${local.id}`, data, {
+      await axios.patch(env.API_BASE_URL + env.endpoints.local(local.id), data, {
         headers: { "Authorization": `Token ${localStorage.getItem("token")}` },
       });
       fetchLocal();
@@ -245,7 +245,7 @@ export default function EncargadoPerfil({ user }: { user: User }) {
     }
 
     try {
-      await axios.post(`${baseURL}/productos`, formData, {
+      await axios.post(env.API_BASE_URL + env.endpoints.productos, formData, {
         headers: {
           "Authorization": `Token ${localStorage.getItem("token")}`,
           "Content-Type": "multipart/form-data",
@@ -262,7 +262,7 @@ export default function EncargadoPerfil({ user }: { user: User }) {
   ) => {
     try {
       await axios.post(
-        `${baseURL}/horarios`,
+        env.API_BASE_URL + env.endpoints.horarios,
         { ...data, local: local.id },
         {
           headers: { "Authorization": `Token ${localStorage.getItem("token")}` },
@@ -286,7 +286,7 @@ export default function EncargadoPerfil({ user }: { user: User }) {
 
     try {
       await axios.post(
-        `${baseURL}/tramos_horarios`,
+        env.API_BASE_URL + env.endpoints.tramos_horarios,
         { ...data, local: local.id },
         {
           headers: { "Authorization": `Token ${localStorage.getItem("token")}` },
@@ -305,7 +305,7 @@ export default function EncargadoPerfil({ user }: { user: User }) {
     formData.append("imagen", data.imagen[0]);
     formData.append("local", local.id.toString());
     try {
-      await axios.post(`${baseURL}/fotos_locales`, formData, {
+      await axios.post(env.API_BASE_URL + env.endpoints.fotos_locales, formData, {
         headers: {
           "Authorization": `Token ${localStorage.getItem("token")}`,
           "Content-Type": "multipart/form-data",
@@ -321,7 +321,7 @@ export default function EncargadoPerfil({ user }: { user: User }) {
 
     try {
       await axios.patch(
-        `${baseURL}/reserva/${id}/local/${local.id}`,
+        env.API_BASE_URL + env.endpoints.reserva_local(id, local.id),
         { estado },
         {
           headers: { "Authorization": `Token ${localStorage.getItem("token")}` },
@@ -339,7 +339,7 @@ export default function EncargadoPerfil({ user }: { user: User }) {
       return;
     }
     if (reserva) {
-      await axios.delete(`${baseURL}/${endpoint}/${id}/local/${local.id}`, {
+      await axios.delete(`${env.API_BASE_URL}/${endpoint}/${id}/local/${local.id}`, {
         headers: { Authorization: `Token ${localStorage.getItem("token")}` },
       })
         .then(() => {
@@ -352,7 +352,7 @@ export default function EncargadoPerfil({ user }: { user: User }) {
         });
       return
     } else {
-      await axios.delete(`${baseURL}/${endpoint}/${id}/local/${local.id}`, {
+      await axios.delete(`${env.API_BASE_URL}/${endpoint}/${id}/local/${local.id}`, {
         headers: { Authorization: `Token ${localStorage.getItem("token")}` },
       })
         .then(() => {
