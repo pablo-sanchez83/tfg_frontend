@@ -1,5 +1,6 @@
 import { createContext, useState, ReactNode, useEffect } from "react";
 import env from "@/lib/env";
+import axios from "axios";
 
 interface AuthContextProps {
   isLoggedIn: boolean;
@@ -31,6 +32,9 @@ export const Proveedor = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = () => {
+    axios.get(env.API_BASE_URL + env.endpoints.logout, {
+      headers: { Authorization: `Token ${localStorage.getItem(env.TOKEN_KEY)}` },
+    });
     localStorage.removeItem(env.TOKEN_KEY);
     setIsLoggedIn(false);
   };

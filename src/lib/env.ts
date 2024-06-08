@@ -3,6 +3,7 @@ const env = {
   TOKEN_KEY: "token",
   endpoints: {
     login: "/login",
+    logout: "/logout",
     register: "/register",
     mi_usuario: "/mi_usuario",
     usuarios: "/usuarios",
