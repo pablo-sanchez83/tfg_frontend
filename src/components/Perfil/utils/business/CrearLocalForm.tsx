@@ -223,6 +223,7 @@ export default function CrearLocalForm({
                 </FormItem>
               )}
             />
+            <p>Password : <strong>{empresa?.nombre}{createLocalForm.getValues("encargado_username")}{new Date().getFullYear()}</strong></p>
             <Button type="submit">Crear Local</Button>
           </form>
         </Form>
