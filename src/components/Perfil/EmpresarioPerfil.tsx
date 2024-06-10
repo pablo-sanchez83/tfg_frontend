@@ -75,7 +75,7 @@ export default function EmpresarioPerfil({ user }: { user: User }) {
 
   const handleDeleteLocal = async (id: number) => {
     try {
-      await axios.delete(env.API_BASE_URL + env.endpoints.local(id) + "/eliminar", {
+      await axios.delete(env.API_BASE_URL + env.endpoints.eliminar_local(id), {
         headers: { Authorization: `Token ${localStorage.getItem(env.TOKEN_KEY)}` },
       });
       setLocales(locales.filter((local) => local.id !== id));

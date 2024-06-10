@@ -18,6 +18,7 @@ const env = {
     usuario: (id: number) => `/usuario/${id}`,
     empresa: (id: number) => `/empresa/${id}`,
     local: (id: number) => `/local/${id}`,
+    eliminar_local: (id: number) => `/eliminar_local/${id}`,
     categoria_culinaria: (id: number) => `/categoria_culinaria/${id}`,
     reservas_local: (id: number) => `/reservas/local/${id}`,
     reserva_local: (idReserva: number, idLocal: number) => `/reserva/${idReserva}/local/${idLocal}`,
