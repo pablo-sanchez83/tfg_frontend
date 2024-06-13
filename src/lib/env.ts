@@ -1,6 +1,5 @@
 const env = {
   API_BASE_URL: "https://web-production-6e7ec.up.railway.app/api",
-  API_BASE_URL_IMG: "http://web-production-6e7ec.up.railway.app/api",
   TOKEN_KEY: "token",
   endpoints: {
     login: "/login",
