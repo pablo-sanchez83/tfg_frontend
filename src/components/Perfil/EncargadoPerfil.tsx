@@ -476,7 +476,7 @@ export default function EncargadoPerfil({ user }: { user: User }) {
                         <TableCell>{producto.categoria}</TableCell>
                         <TableCell>
                           <img
-                            src={producto.imagen}
+                            src={env.API_BASE_URL_IMG + producto.imagen}
                             alt={producto.nombre_producto}
                             width="50"
                           />
@@ -725,7 +725,7 @@ export default function EncargadoPerfil({ user }: { user: User }) {
                       <TableRow key={index}>
                         <TableCell>
                           <img
-                            src={env.API_BASE_URL + foto.imagen}
+                            src={env.API_BASE_URL_IMG + foto.imagen}
                             alt={`Foto ${foto.id}`}
                             width="50"
                           />

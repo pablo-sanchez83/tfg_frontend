@@ -311,7 +311,7 @@ const DetallesLocal: React.FC = () => {
               <CarouselItem key={index}>
                 <img
                   className="h-80 min-h-76 w-full"
-                  src={env.API_BASE_URL + foto.imagen}
+                  src={env.API_BASE_URL_IMG + foto.imagen}
                   alt={`Imagen ${index + 1}`}
                 />
               </CarouselItem>
@@ -389,7 +389,7 @@ const DetallesLocal: React.FC = () => {
                         className="flex flex-col items-center justify-center bg-gray-100 p-4 w-full mb-4 border rounded"
                       >
                         <img
-                          src={env.API_BASE_URL + producto.imagen}
+                          src={env.API_BASE_URL_IMG + producto.imagen}
                           alt={producto.nombre_producto}
                           className="w-full h-auto"
                         />
