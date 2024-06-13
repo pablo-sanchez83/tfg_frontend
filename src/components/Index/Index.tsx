@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Locales, Categoria_Culinaria } from "@/lib/interfaces";
+import { Locales, Categoria_Culinaria, User } from "@/lib/interfaces";
 import { useEffect, useState } from "react";
 
 import {
@@ -28,6 +28,7 @@ import env from "@/lib/env";
 export default function Index() {
   const [locales, setLocales] = useState<Locales[]>([]);
   const [categorias, setCategorias] = useState<Categoria_Culinaria[]>([]);
+  const [usuario, setUsuario] = useState<User>();
   const [categoriaSeleccionada, setCategoriaSeleccionada] =
     useState<string>("todas");
 
@@ -53,6 +54,17 @@ export default function Index() {
       .catch((err) => {
         console.error(err);
       });
+
+    axios.get<User>(
+      env.API_BASE_URL + env.endpoints.mi_usuario,
+      {
+        headers: {
+          "Authorization": `Token ${localStorage.getItem(env.TOKEN_KEY)}`
+        }
+      })
+      .then(res => {
+        setUsuario(res.data);
+      })
   }, []);
 
   const handleCategoriaChange = (value: string) => {
@@ -62,9 +74,9 @@ export default function Index() {
   const localesFiltrados =
     categoriaSeleccionada !== "todas"
       ? locales.filter(
-          (local) =>
-            local.categoria_culinaria.id === parseInt(categoriaSeleccionada)
-        )
+        (local) =>
+          local.categoria_culinaria.id === parseInt(categoriaSeleccionada)
+      )
       : locales;
 
   return (
@@ -124,12 +136,14 @@ export default function Index() {
                 >
                   Ver más
                 </Link>
-                <Link
-                  to={`/reservar/${local.id}`}
-                  className="p-2 grid place-items-center rounded duration-100 hover:scale-110 w-full hover:bg-[#e67e22] font-bold uppercase border-[#e67e22] border bg-white text-[#e67e22] hover:text-white"
-                >
-                  Reservar
-                </Link>
+                {usuario && (
+                  <Link
+                    to={`/reservar/${local.id}`}
+                    className="p-2 grid place-items-center rounded duration-100 hover:scale-110 w-full hover:bg-[#e67e22] font-bold uppercase border-[#e67e22] border bg-white text-[#e67e22] hover:text-white"
+                  >
+                    Reservar
+                  </Link>
+                )}
               </CardFooter>
             </Card>
           ))
