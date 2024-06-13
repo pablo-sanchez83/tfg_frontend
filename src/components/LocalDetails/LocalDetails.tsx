@@ -43,6 +43,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import env from "@/lib/env";
 
 const EsquemaComentario = z.object({
   comentario: z
@@ -84,7 +85,7 @@ const DetallesLocal: React.FC = () => {
   function obtenerUsuario() {
     if (isLoggedIn) {
       axios
-        .get<User>("http://localhost:8000/api/mi_usuario", {
+        .get<User>(env.API_BASE_URL + env.endpoints.mi_usuario, {
           headers: {
             Authorization: `Token ${localStorage.getItem("token")}`,
           },
@@ -101,7 +102,7 @@ const DetallesLocal: React.FC = () => {
   function obtenerLocal() {
     if (id) {
       axios
-        .get<Locales>(`http://localhost:8000/api/local/${id}`)
+        .get<Locales>(env.API_BASE_URL + env.endpoints.local(parseInt(id)))
         .then((res) => {
           setLocal(res.data);
           document.title = res.data.nombre; // Actualiza el título aquí
@@ -310,7 +311,7 @@ const DetallesLocal: React.FC = () => {
               <CarouselItem key={index}>
                 <img
                   className="h-80 min-h-76 w-full"
-                  src={"http://localhost:8000" + foto.imagen}
+                  src={env.API_BASE_URL + foto.imagen}
                   alt={`Imagen ${index + 1}`}
                 />
               </CarouselItem>
@@ -388,7 +389,7 @@ const DetallesLocal: React.FC = () => {
                         className="flex flex-col items-center justify-center bg-gray-100 p-4 w-full mb-4 border rounded"
                       >
                         <img
-                          src={"http://localhost:8000" + producto.imagen}
+                          src={env.API_BASE_URL + producto.imagen}
                           alt={producto.nombre_producto}
                           className="w-full h-auto"
                         />

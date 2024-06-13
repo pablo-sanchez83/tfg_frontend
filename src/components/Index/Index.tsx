@@ -95,7 +95,7 @@ export default function Index() {
                       <CarouselItem key={index}>
                         <img
                           className="max-h-60 min-h-56"
-                          src={"http://localhost:8000/" + foto.imagen}
+                          src={env.API_BASE_URL + foto.imagen}
                           alt="Imagen del local"
                         />
                       </CarouselItem>

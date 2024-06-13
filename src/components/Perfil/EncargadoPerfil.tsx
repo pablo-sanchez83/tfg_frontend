@@ -725,7 +725,7 @@ export default function EncargadoPerfil({ user }: { user: User }) {
                       <TableRow key={index}>
                         <TableCell>
                           <img
-                            src={"http://127.0.0.1:8000" + foto.imagen}
+                            src={env.API_BASE_URL + foto.imagen}
                             alt={`Foto ${foto.id}`}
                             width="50"
                           />
