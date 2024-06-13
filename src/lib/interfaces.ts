@@ -90,7 +90,7 @@ export interface Comentario {
   comentario: string;
   estrellas: number;
   respuesta: boolean;
-  respuestas: Comentario[]; // Añadir este campo
+  respuestas: Comentario[];
 }
 
 export interface Locales {

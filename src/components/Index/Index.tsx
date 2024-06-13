@@ -34,7 +34,7 @@ export default function Index() {
   useEffect(() => {
     // Fetch locales
     axios
-      .get<Locales[]>("http://localhost:8000/api/locales")
+      .get<Locales[]>(env.API_BASE_URL + env.endpoints.locales)
       .then((res) => {
         setLocales(res.data);
       })
