@@ -447,7 +447,7 @@ export default function EncargadoPerfil({ user }: { user: User }) {
                 </div>
                 <div>
                   <label>Imagen</label>
-                  <Input type="file" {...productoForm.register("imagen")} />
+                  <Input accept=".jpeg,.jpg,.png,.webp" type="file" {...productoForm.register("imagen")} />
                 </div>
                 <Button type="submit" className="mt-4">
                   Agregar Producto
@@ -704,7 +704,7 @@ export default function EncargadoPerfil({ user }: { user: User }) {
               <form onSubmit={fotoForm.handleSubmit(handleAddFoto)}>
                 <div>
                   <label>Imagen</label>
-                  <Input type="file" {...fotoForm.register("imagen")} />
+                  <Input accept=".jpeg,.jpg,.png,.webp" type="file" {...fotoForm.register("imagen")} />
                 </div>
                 <Button type="submit" className="mt-4">
                   Agregar Foto
