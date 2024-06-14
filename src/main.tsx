@@ -13,6 +13,7 @@ import CuentaEmpresa from "./components/account/Empresa/CuentaEmpresa";
 import LocalDetails from "./components/LocalDetails/LocalDetails";
 import Reserva from "./components/Reserva/Reserva";
 import Perfil from "./components/Perfil/Perfil";
+import ErrorMissing from "./assets/404Error";
 
 const router = createBrowserRouter([
   {
@@ -63,6 +64,14 @@ const router = createBrowserRouter([
       </GenericLayout>
     ),
   },
+  {
+    path: "/*",
+    element: (
+      <AccountLayout>
+        <ErrorMissing/>
+      </AccountLayout>
+    )
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
