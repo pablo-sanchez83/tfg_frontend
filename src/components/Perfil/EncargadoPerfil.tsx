@@ -142,15 +142,9 @@ export default function EncargadoPerfil({ user }: { user: User }) {
   });
 
   useEffect(() => {
-    fetchAllData();
+    fetchLocal();
   }, []);
 
-  const fetchAllData = () => {
-    fetchLocal();
-    fetchProductos();
-    fetchHorarios();
-    fetchTramos();
-  };
 
   useEffect(() => {
     if (local.id) {
@@ -165,45 +159,15 @@ export default function EncargadoPerfil({ user }: { user: User }) {
       });
       setLocal(response.data);
       setFotos(response.data.fotos);
+      setTramos(response.data.tramos_horarios)
+      setHorarios(response.data.horarios)
+      setProductos(response.data.productos)
       localForm.reset(response.data);
       if (response.data.id) {
         fetchReservas(response.data.id); // Fetch reservas after local data is set
       }
     } catch (error) {
       console.error("Error fetching local:", error);
-    }
-  };
-
-  const fetchProductos = async () => {
-    try {
-      const response = await axios.get(env.API_BASE_URL + env.endpoints.productos, {
-        headers: { "Authorization": `Token ${localStorage.getItem("token")}` },
-      });
-      setProductos(response.data);
-    } catch (error) {
-      console.error("Error fetching productos:", error);
-    }
-  };
-
-  const fetchHorarios = async () => {
-    try {
-      const response = await axios.get(env.API_BASE_URL + env.endpoints.horarios, {
-        headers: { "Authorization": `Token ${localStorage.getItem("token")}` },
-      });
-      setHorarios(response.data);
-    } catch (error) {
-      console.error("Error fetching horarios:", error);
-    }
-  };
-
-  const fetchTramos = async () => {
-    try {
-      const response = await axios.get(env.API_BASE_URL + env.endpoints.tramos_horario_local(local?.id), {
-        headers: { "Authorization": `Token ${localStorage.getItem("token")}` },
-      });
-      setTramos(response.data);
-    } catch (error) {
-      console.error("Error fetching tramos horarios:", error);
     }
   };
 
@@ -251,7 +215,7 @@ export default function EncargadoPerfil({ user }: { user: User }) {
           "Content-Type": "multipart/form-data",
         },
       });
-      fetchProductos();
+      fetchLocal();
     } catch (error) {
       console.error("Error adding producto:", error);
     }
@@ -268,7 +232,7 @@ export default function EncargadoPerfil({ user }: { user: User }) {
           headers: { "Authorization": `Token ${localStorage.getItem("token")}` },
         },
       );
-      fetchHorarios();
+      fetchLocal();
     } catch (error) {
       console.error("Error adding horario:", error);
     }
@@ -292,7 +256,7 @@ export default function EncargadoPerfil({ user }: { user: User }) {
           headers: { "Authorization": `Token ${localStorage.getItem("token")}` },
         },
       );
-      fetchTramos();
+      fetchLocal();
     } catch (error) {
       console.error("Error adding tramo horario:", error);
     }
@@ -344,7 +308,7 @@ export default function EncargadoPerfil({ user }: { user: User }) {
       })
         .then(() => {
           toast.success("Se ha eliminado el registro correctamente.");
-          fetchAllData();
+          fetchLocal();
         })
         .catch((error) => {
           console.error("Error deleting record:", error);
@@ -357,7 +321,7 @@ export default function EncargadoPerfil({ user }: { user: User }) {
       })
         .then(() => {
           toast.success("Se ha eliminado el registro correctamente.");
-          fetchAllData();
+          fetchLocal();
         })
         .catch((error) => {
           console.error("Error deleting record:", error);
