@@ -125,9 +125,6 @@ export default function Index() {
                 <p className="text-gray-700 text-base">
                   {local.categoria_culinaria.nombre}
                 </p>
-                <p className="text-gray-700 text-base">
-                  {local.categoria_culinaria.descripcion}
-                </p>
               </CardContent>
               <CardFooter className="justify-between gap-3">
                 <Link
