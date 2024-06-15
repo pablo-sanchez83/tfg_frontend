@@ -326,6 +326,12 @@ const DetallesLocal: React.FC = () => {
           <strong>Dirección:</strong> {local.direccion}
         </p>
         <p>
+          <strong>Categoría culinaria: </strong> {local.categoria_culinaria.nombre}
+        </p>
+        <p>
+          {local.categoria_culinaria.descripcion}
+        </p>
+        <p>
           <strong>Horario:</strong>{" "}
           {local.horarios
             .map(
