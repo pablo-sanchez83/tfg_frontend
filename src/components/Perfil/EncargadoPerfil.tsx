@@ -638,7 +638,7 @@ export default function EncargadoPerfil({ user }: { user: User }) {
                   )}
                 </div>
                 <div>
-                  <label>Clientes Máximos</label>
+                  <label>Comensales Máximos</label>
                   <Input {...tramoHorarioForm.register("clientes_maximos")} />
                   {tramoHorarioForm.formState.errors.clientes_maximos && (
                     <p className="text-red-500">
@@ -659,7 +659,7 @@ export default function EncargadoPerfil({ user }: { user: User }) {
                       <TableHead>Hora Inicio</TableHead>
                       <TableHead>Hora Final</TableHead>
                       <TableHead>Nombre</TableHead>
-                      <TableHead>Clientes Máximos</TableHead>
+                      <TableHead>Comensales Máximos</TableHead>
                       <TableHead>Acciones</TableHead>
                     </TableRow>
                   </TableHeader>

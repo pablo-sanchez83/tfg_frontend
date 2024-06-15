@@ -363,7 +363,7 @@ const DetallesLocal: React.FC = () => {
               {tramo.h_final}
             </p>
             <p>
-              <strong>Máximo de Clientes por Reserva:</strong> {tramo.clientes_maximos}
+              <strong>Máximo de Comensales por Reserva:</strong> {tramo.clientes_maximos}
             </p>
           </div>
         ))}
