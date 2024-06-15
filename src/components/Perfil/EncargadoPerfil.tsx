@@ -198,7 +198,7 @@ export default function EncargadoPerfil({ user }: { user: User }) {
 
   const fetchTramos = async () => {
     try {
-      const response = await axios.get(env.API_BASE_URL + env.endpoints.tramos_horarios, {
+      const response = await axios.get(env.API_BASE_URL + env.endpoints.tramos_horario_local(local?.id), {
         headers: { "Authorization": `Token ${localStorage.getItem("token")}` },
       });
       setTramos(response.data);
