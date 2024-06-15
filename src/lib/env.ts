@@ -24,7 +24,7 @@ const env = {
     reservas_local: (id: number) => `/reservas/local/${id}`,
     reserva_local: (idReserva: number, idLocal: number) => `/reserva/${idReserva}/local/${idLocal}`,
     crear_comentario: (idLocal:number) => `/crear_comentarios/local/${idLocal}`,
-    tramos_horario_local: (idLocal:number) => `/tramos_horarios/${idLocal}`,
+    tramos_horario_local: (idLocal:number) => `/tramos_horarios_subir/${idLocal}`,
     productos: "/productos",
     horarios: "/horarios",
     crear_local: "/crear_local",
