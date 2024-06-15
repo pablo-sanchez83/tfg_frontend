@@ -297,7 +297,7 @@ const DetallesLocal: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col space-y-10 max-w-1/2">
+    <div className="flex flex-col space-y-10 max-w-96">
       <Link to="/" className="text-blue-500 flex">
         <ChevronLeft /> Volver
       </Link>
