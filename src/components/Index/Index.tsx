@@ -106,7 +106,7 @@ export default function Index() {
                     {local.fotos.map((foto, index) => (
                       <CarouselItem key={index}>
                         <img
-                          className="max-h-60 min-h-56 min-w-full"
+                          className="h-60 min-w-full"
                           src={env.API_BASE_URL_IMG + foto.imagen}
                           alt="Imagen del local"
                         />
