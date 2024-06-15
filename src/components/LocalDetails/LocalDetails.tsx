@@ -369,12 +369,14 @@ const DetallesLocal: React.FC = () => {
         ))}
       </div>
       <div className="flex justify-between">
-        <Link
-          to={`/reservar/${local.id}`}
-          className="bg-[#e67e22] text-white font-bold py-2 px-4 rounded mt-4"
-        >
-          Reservar
-        </Link>
+        {usuario && (
+          <Link
+            to={`/reservar/${local.id}`}
+            className="bg-[#e67e22] text-white font-bold py-2 px-4 rounded mt-4"
+          >
+            Reservar
+          </Link>
+        )}
         <Dialog>
           <DialogTrigger>
             <Button className="bg-[#e67e22] text-white font-bold py-2 px-4 rounded mt-4">
