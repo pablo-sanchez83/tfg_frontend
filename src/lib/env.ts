@@ -23,6 +23,7 @@ const env = {
     categoria_culinaria: (id: number) => `/categoria_culinaria/${id}`,
     reservas_local: (id: number) => `/reservas/local/${id}`,
     reserva_local: (idReserva: number, idLocal: number) => `/reserva/${idReserva}/local/${idLocal}`,
+    crear_comentario: (idLocal:number) => `/crear_comentarios/local/${idLocal}`,
     productos: "/productos",
     horarios: "/horarios",
     crear_local: "/crear_local",

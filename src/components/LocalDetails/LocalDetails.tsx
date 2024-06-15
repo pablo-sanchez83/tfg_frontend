@@ -164,22 +164,24 @@ const DetallesLocal: React.FC = () => {
       usuario: usuario?.id?.toString() || "",
     };
 
-    axios
-      .post(
-        `http://127.0.0.1:8000/api/crear_comentarios/local/${local?.id}`,
-        datosFormulario,
-        {
-          headers: { Authorization: `Token ${localStorage.getItem("token")}` },
-        },
-      )
-      .then(() => {
-        obtenerLocal();
-        // no funciona :C
-        formulario.reset();
-      })
-      .catch((error) => {
-        console.error("Error al enviar comentario", error.response.data);
-      });
+    if (local?.id) {
+      axios
+        .post(
+          env.API_BASE_URL + env.endpoints.crear_comentario(local.id),
+          datosFormulario,
+          {
+            headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+          },
+        )
+        .then(() => {
+          obtenerLocal();
+          // no funciona :C
+          formulario.reset();
+        })
+        .catch((error) => {
+          console.error("Error al enviar comentario", error.response.data);
+        });
+    }
   }
 
   function onSubmitRespuesta(data: z.infer<typeof EsquemaComentario>) {
@@ -192,24 +194,26 @@ const DetallesLocal: React.FC = () => {
       respuesta_a: comentarioAResponder?.id?.toString() || "",
     };
 
-    axios
-      .post(
-        `http://127.0.0.1:8000/api/crear_comentarios/local/${local?.id}`,
-        datosFormulario,
-        {
-          headers: { Authorization: `Token ${localStorage.getItem("token")}` },
-        },
-      )
-      .then(() => {
-        obtenerLocal();
-        formularioRespuesta.reset();
-      })
-      .catch((error) => {
-        console.error("Error al enviar respuesta", error.response.data);
-      })
-      .finally(() => {
-        setComentarioAResponder(null);
-      });
+    if (local?.id) {
+      axios
+        .post(
+          env.API_BASE_URL + env.endpoints.crear_comentario(local.id),
+          datosFormulario,
+          {
+            headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+          },
+        )
+        .then(() => {
+          obtenerLocal();
+          formularioRespuesta.reset();
+        })
+        .catch((error) => {
+          console.error("Error al enviar respuesta", error.response.data);
+        })
+        .finally(() => {
+          setComentarioAResponder(null);
+        });
+    }
   }
 
   // Organizar productos por categoría
@@ -317,8 +321,8 @@ const DetallesLocal: React.FC = () => {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
+          <CarouselPrevious className="hidden md:flex" />
+          <CarouselNext className="hidden md:flex" />
         </Carousel>
       </div>
       <div className="mt-4">
