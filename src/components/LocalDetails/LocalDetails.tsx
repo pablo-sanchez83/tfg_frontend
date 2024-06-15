@@ -305,12 +305,12 @@ const DetallesLocal: React.FC = () => {
         </span>
       </h1>
       <div className="mt-4">
-        <Carousel className="w-full max-w-2xl">
+        <Carousel className="w-full">
           <CarouselContent>
             {local.fotos.map((foto: FotoLocal, index) => (
               <CarouselItem key={index}>
                 <img
-                  className="h-80 min-h-76 w-full"
+                  className="h-auto w-full"
                   src={env.API_BASE_URL_IMG + foto.imagen}
                   alt={`Imagen ${index + 1}`}
                 />
