@@ -525,7 +525,6 @@ export default function EncargadoPerfil({ user }: { user: User }) {
                     <TableRow>
                       <TableHead>Hora Apertura</TableHead>
                       <TableHead>Hora Cierre</TableHead>
-                      <TableHead>Días</TableHead>
                       <TableHead>Acciones</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -534,12 +533,6 @@ export default function EncargadoPerfil({ user }: { user: User }) {
                       <TableRow key={index}>
                         <TableCell>{horario.hora_apertura}</TableCell>
                         <TableCell>{horario.hora_cierre}</TableCell>
-                        <TableCell>
-                          {dias.map(
-                            (dia, index) =>
-                              horario[dia] && <span key={index}>{dia} </span>,
-                          )}
-                        </TableCell>
                         <TableCell>
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
