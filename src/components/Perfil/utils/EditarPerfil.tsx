@@ -45,6 +45,7 @@ const editUserSchema = z.object({
   tel: z.string().regex(/^\d{1,4}-\d{7,10}$/, { message: "Teléfono inválido" }),
 });
 
+// Componente para editar el perfil de usuario
 export default function EditarPerfil({ user }: UserProfileFormProps) {
   // Formulario para la edición del usuario
   const editForm = useForm<z.infer<typeof editUserSchema>>({

@@ -23,11 +23,13 @@ export default function EmpresarioPerfil({ user }: { user: User }) {
   const [locales, setLocales] = useState<Locales[]>([]);
   const [categorias, setCategorias] = useState<Categoria_Culinaria[]>([]);
 
+  // Fetch de la empresa y categorías culinarias al montar el componente
   useEffect(() => {
     fetchEmpresa();
     fetchCategoriasCulinarias();
   }, []);
 
+  // Fetch de los locales cuando la empresa esté definida
   useEffect(() => {
     if (empresa) {
       fetchLocales();

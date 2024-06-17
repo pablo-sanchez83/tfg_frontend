@@ -23,21 +23,25 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 export default function AdminPerfil({ user }: { user: User }) {
+  // Estados para almacenar usuarios, empresas y categorías culinarias
   const [users, setUsers] = useState<User[]>([]);
   const [empresas, setEmpresas] = useState<Empresa[]>([]);
   const [categoriasCulinarias, setCategoriasCulinarias] = useState<Categoria_Culinaria[]>([]);
 
+  // Efecto para obtener usuarios, empresas y categorías culinarias al montar el componente
   useEffect(() => {
     fetchUsers();
     fetchEmpresas();
     fetchCategoriasCulinarias();
   }, []);
 
+  // Esquema de validación para el formulario de categoría culinaria
   const categoriaCulinariaSchema = z.object({
     nombre: z.string().min(1, { message: "El nombre es obligatorio" }),
     descripcion: z.string().min(10, { message: "La descripción es obligatoria" }),
   });
 
+  // Hook de formulario para manejar la creación de categorías culinarias
   const categoriaCulinariaForm = useForm<z.infer<typeof categoriaCulinariaSchema>>({
     resolver: zodResolver(categoriaCulinariaSchema),
     defaultValues: {
@@ -46,6 +50,7 @@ export default function AdminPerfil({ user }: { user: User }) {
     },
   });
 
+  // Función para obtener los usuarios desde la API
   const fetchUsers = async () => {
     try {
       const response = await axios.get(env.API_BASE_URL + env.endpoints.usuarios, {
@@ -57,6 +62,7 @@ export default function AdminPerfil({ user }: { user: User }) {
     }
   };
 
+  // Función para obtener las empresas desde la API
   const fetchEmpresas = async () => {
     try {
       const response = await axios.get(env.API_BASE_URL + env.endpoints.empresas, {
@@ -68,6 +74,7 @@ export default function AdminPerfil({ user }: { user: User }) {
     }
   };
 
+  // Función para obtener las categorías culinarias desde la API
   const fetchCategoriasCulinarias = async () => {
     try {
       const response = await axios.get(env.API_BASE_URL + env.endpoints.categorias_culinarias, {
@@ -79,6 +86,7 @@ export default function AdminPerfil({ user }: { user: User }) {
     }
   };
 
+  // Función para manejar la eliminación de un usuario
   const handleDeleteUser = async (id: number) => {
     try {
       await axios.delete(env.API_BASE_URL + env.endpoints.usuario(id), {
@@ -90,6 +98,7 @@ export default function AdminPerfil({ user }: { user: User }) {
     }
   };
 
+  // Función para manejar la eliminación de una empresa
   const handleDeleteEmpresa = async (id: number) => {
     try {
       await axios.delete(env.API_BASE_URL + env.endpoints.empresa(id), {
@@ -101,6 +110,7 @@ export default function AdminPerfil({ user }: { user: User }) {
     }
   };
 
+  // Función para manejar la eliminación de una categoría culinaria
   const handleDeleteCategoriaCulinaria = async (id: number) => {
     try {
       await axios.delete(env.API_BASE_URL + env.endpoints.categoria_culinaria(id), {
@@ -112,6 +122,7 @@ export default function AdminPerfil({ user }: { user: User }) {
     }
   };
 
+  // Función para manejar el cambio de estado confirmado de una empresa
   const handleToggleConfirmado = async (id: number, confirmado: boolean) => {
     try {
       await axios.patch(
@@ -131,6 +142,7 @@ export default function AdminPerfil({ user }: { user: User }) {
     }
   };
 
+  // Función para manejar la creación de una categoría culinaria
   const onCreateCategory = async (values: z.infer<typeof categoriaCulinariaSchema>) => {
     try {
       await axios.post(env.API_BASE_URL + env.endpoints.categorias_culinarias, values, {
@@ -145,6 +157,7 @@ export default function AdminPerfil({ user }: { user: User }) {
   return (
     <div className="flex flex-col lg:flex-row gap-4 w-full h-full">
       <div className="flex flex-col gap-4 w-full lg:w-3/4 h-[80vh]">
+        {/* Tabla de Usuarios */}
         <Card className="flex-1 overflow-auto">
           <CardHeader>
             <CardTitle>Usuarios</CardTitle>
@@ -187,6 +200,8 @@ export default function AdminPerfil({ user }: { user: User }) {
             </Table>
           </CardContent>
         </Card>
+
+        {/* Tabla de Empresas */}
         <Card className="flex-1 overflow-auto">
           <CardHeader>
             <CardTitle>Empresas</CardTitle>
@@ -238,7 +253,11 @@ export default function AdminPerfil({ user }: { user: User }) {
             </Table>
           </CardContent>
         </Card>
+
+        {/* Componente de Mis Reservas */}
         <MisReservas />
+
+        {/* Tabla de Categorías Culinarias */}
         <Card className="flex-1 overflow-auto">
           <CardHeader>
             <CardTitle>Categorias culinarias</CardTitle>
@@ -276,6 +295,8 @@ export default function AdminPerfil({ user }: { user: User }) {
           </CardContent>
         </Card>
       </div>
+
+      {/* Formulario de Perfil y Creación de Categoría */}
       <div className="w-full lg:w-1/4">
         <EditarPerfil user={user} />
         <Card className="flex-1 overflow-auto">

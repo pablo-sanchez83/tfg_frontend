@@ -45,6 +45,7 @@ import {
 } from "@/components/ui/dialog";
 import env from "@/lib/env";
 
+// Esquema de validación para comentarios
 const EsquemaComentario = z.object({
   comentario: z
     .string()
@@ -82,6 +83,7 @@ const DetallesLocal: React.FC = () => {
     obtenerUsuario();
   }, [id, isLoggedIn]);
 
+  // Obtener datos del usuario
   function obtenerUsuario() {
     if (isLoggedIn) {
       axios
@@ -99,6 +101,7 @@ const DetallesLocal: React.FC = () => {
     }
   }
 
+  // Obtener datos del local
   function obtenerLocal() {
     if (id) {
       axios
@@ -121,6 +124,7 @@ const DetallesLocal: React.FC = () => {
     );
   }
 
+  // Días de la semana
   const diasDeLaSemana = [
     { label: "L", value: "L" },
     { label: "M", value: "M" },
@@ -131,6 +135,7 @@ const DetallesLocal: React.FC = () => {
     { label: "D", value: "D" },
   ];
 
+  // Renderizar los días
   const renderizarDias = (dias: { [key: string]: boolean }) => {
     return diasDeLaSemana.map((dia, index) => (
       <span
@@ -142,6 +147,7 @@ const DetallesLocal: React.FC = () => {
     ));
   };
 
+  // Calcular la media de likes
   const calcularMediaLikes = (comentarios: Comentario[]) => {
     if (comentarios.length === 0) {
       return 0;
@@ -155,6 +161,7 @@ const DetallesLocal: React.FC = () => {
     }
   };
 
+  // Manejar el envío del formulario de comentarios
   function onSubmit(data: z.infer<typeof EsquemaComentario>) {
     const datosFormulario = {
       comentario: data.comentario,
@@ -175,7 +182,6 @@ const DetallesLocal: React.FC = () => {
         )
         .then(() => {
           obtenerLocal();
-          // no funciona :C
           formulario.reset();
         })
         .catch((error) => {
@@ -184,6 +190,7 @@ const DetallesLocal: React.FC = () => {
     }
   }
 
+  // Manejar el envío del formulario de respuestas
   function onSubmitRespuesta(data: z.infer<typeof EsquemaComentario>) {
     const datosFormulario = {
       comentario: data.comentario,
@@ -228,6 +235,7 @@ const DetallesLocal: React.FC = () => {
     {},
   );
 
+  // Personalización de las estrellas
   const Estrella = (
     <path d="M62 25.154H39.082L32 3l-7.082 22.154H2l18.541 13.693L13.459 61L32 47.309L50.541 61l-7.082-22.152L62 25.154z" />
   ); // Fuente: https://www.svgrepo.com/svg/353297/star
@@ -251,6 +259,7 @@ const DetallesLocal: React.FC = () => {
     inactiveBoxBorderColor: "#a8a8a8",
   };
 
+  // Renderizar comentarios y respuestas
   const renderizarComentarios = (comentarios: Comentario[], nivel = 0) => {
     const margenDerecho = nivel * 20; // Ajusta el multiplicador según sea necesario
 

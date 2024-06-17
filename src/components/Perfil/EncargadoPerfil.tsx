@@ -43,6 +43,7 @@ import {
 import { estadoToString } from "@/lib/utils";
 import env from "@/lib/env";
 
+// Esquemas de validación para los formularios
 const localSchema = z.object({
   nombre: z.string().max(100),
   direccion: z.string().max(255),
@@ -91,6 +92,7 @@ export default function EncargadoPerfil({ user }: { user: User }) {
   const [reservas, setReservas] = useState<Reservas[]>([]);
   const [fotos, setFotos] = useState<FotoLocal[]>([]);
 
+  // Formularios usando React Hook Form con validación usando Zod
   const localForm = useForm<z.infer<typeof localSchema>>({
     resolver: zodResolver(localSchema),
     defaultValues: {
@@ -141,17 +143,19 @@ export default function EncargadoPerfil({ user }: { user: User }) {
     },
   });
 
+  // Fetch del local al montar el componente
   useEffect(() => {
     fetchLocal();
   }, []);
 
-
+  // Fetch de las reservas cuando el ID del local esté definido
   useEffect(() => {
     if (local.id) {
       fetchReservas(local.id);
     }
   }, [local.id]);
 
+  // Función para obtener los datos del local
   const fetchLocal = async () => {
     try {
       const response = await axios.get(env.API_BASE_URL + env.endpoints.mi_local, {
@@ -159,18 +163,19 @@ export default function EncargadoPerfil({ user }: { user: User }) {
       });
       setLocal(response.data);
       setFotos(response.data.fotos);
-      setTramos(response.data.tramos_horarios)
-      setHorarios(response.data.horarios)
-      setProductos(response.data.productos)
+      setTramos(response.data.tramos_horarios);
+      setHorarios(response.data.horarios);
+      setProductos(response.data.productos);
       localForm.reset(response.data);
       if (response.data.id) {
-        fetchReservas(response.data.id); // Fetch reservas after local data is set
+        fetchReservas(response.data.id); // Fetch reservas después de establecer los datos del local
       }
     } catch (error) {
       console.error("Error fetching local:", error);
     }
   };
 
+  // Función para obtener las reservas del local
   const fetchReservas = async (localId: number) => {
     try {
       const response = await axios.get(env.API_BASE_URL + env.endpoints.reservas_local(localId), {
@@ -182,9 +187,8 @@ export default function EncargadoPerfil({ user }: { user: User }) {
     }
   };
 
-  const handleUpdateLocal: SubmitHandler<z.infer<typeof localSchema>> = async (
-    data,
-  ) => {
+  // Función para actualizar la información del local
+  const handleUpdateLocal: SubmitHandler<z.infer<typeof localSchema>> = async (data) => {
     try {
       await axios.patch(env.API_BASE_URL + env.endpoints.local(local.id), data, {
         headers: { "Authorization": `Token ${localStorage.getItem("token")}` },
@@ -195,9 +199,8 @@ export default function EncargadoPerfil({ user }: { user: User }) {
     }
   };
 
-  const handleAddProducto: SubmitHandler<
-    z.infer<typeof productoSchema>
-  > = async (data) => {
+  // Función para agregar un nuevo producto
+  const handleAddProducto: SubmitHandler<z.infer<typeof productoSchema>> = async (data) => {
     const formData = new FormData();
     formData.append("nombre_producto", data.nombre_producto);
     formData.append("descripcion", data.descripcion);
@@ -221,9 +224,8 @@ export default function EncargadoPerfil({ user }: { user: User }) {
     }
   };
 
-  const handleAddHorario: SubmitHandler<z.infer<typeof horarioSchema>> = async (
-    data,
-  ) => {
+  // Función para agregar un nuevo horario
+  const handleAddHorario: SubmitHandler<z.infer<typeof horarioSchema>> = async (data) => {
     try {
       await axios.post(
         env.API_BASE_URL + env.endpoints.horarios,
@@ -238,9 +240,8 @@ export default function EncargadoPerfil({ user }: { user: User }) {
     }
   };
 
-  const handleAddTramoHorario: SubmitHandler<
-    z.infer<typeof tramoHorarioSchema>
-  > = async (data) => {
+  // Función para agregar un nuevo tramo horario
+  const handleAddTramoHorario: SubmitHandler<z.infer<typeof tramoHorarioSchema>> = async (data) => {
     const formData = new FormData();
     formData.append("h_inicio", data.h_inicio);
     formData.append("h_fin", data.h_final);
@@ -262,9 +263,8 @@ export default function EncargadoPerfil({ user }: { user: User }) {
     }
   };
 
-  const handleAddFoto: SubmitHandler<z.infer<typeof fotoLocalSchema>> = async (
-    data,
-  ) => {
+  // Función para agregar una nueva foto del local
+  const handleAddFoto: SubmitHandler<z.infer<typeof fotoLocalSchema>> = async (data) => {
     const formData = new FormData();
     formData.append("imagen", data.imagen[0]);
     formData.append("local", local.id.toString());
@@ -281,8 +281,8 @@ export default function EncargadoPerfil({ user }: { user: User }) {
     }
   };
 
+  // Función para actualizar el estado de una reserva
   const updateReservaEstado = async (id: number, estado: string) => {
-
     try {
       await axios.patch(
         env.API_BASE_URL + env.endpoints.reserva_local(id, local.id),
@@ -297,6 +297,7 @@ export default function EncargadoPerfil({ user }: { user: User }) {
     }
   };
 
+  // Función para eliminar un registro (producto, horario, tramo horario, foto)
   const deleteRecord = async (endpoint: string, id?: number, reserva?: Reservas) => {
     if (!local.id) {
       console.error("Local ID is undefined");
@@ -328,12 +329,11 @@ export default function EncargadoPerfil({ user }: { user: User }) {
           toast.error("Se ha producido un error al eliminar el registro.");
         });
     }
-
   };
 
   return (
     <>
-      <ToastContainer/>
+      <ToastContainer />
       <div className="flex flex-col gap-4 w-full m-3">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-auto">
           <Card className="max-h-[500px] overflow-auto ">

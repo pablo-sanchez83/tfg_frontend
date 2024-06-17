@@ -28,10 +28,11 @@ import "react-toastify/dist/ReactToastify.css";
 import env from "@/lib/env";
 
 const Reserva: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-  const [local, setLocal] = useState<Locales | null>(null);
-  const [usuario, setUsuario] = useState<User | null>(null);
+  const { id } = useParams<{ id: string }>(); // Obtener el ID del local desde los parámetros de la URL
+  const [local, setLocal] = useState<Locales | null>(null); // Estado para almacenar los datos del local
+  const [usuario, setUsuario] = useState<User | null>(null); // Estado para almacenar los datos del usuario
 
+  // Efecto para obtener los datos del local y del usuario al montar el componente
   useEffect(() => {
     const fetchData = async () => {
       if (id !== undefined) {
@@ -52,6 +53,7 @@ const Reserva: React.FC = () => {
     fetchData();
   }, [id]);
 
+  // Función para verificar si una fecha está habilitada según los horarios del local
   const isDateEnabled = (date: Date): boolean => {
     if (!local || !local.horarios || local.horarios.length === 0) {
       return false;
@@ -63,6 +65,7 @@ const Reserva: React.FC = () => {
     return local.horarios.some((horario) => horario.dias[dayMap[dayOfWeek]]);
   };
 
+  // Esquema de validación para el formulario de reserva
   const reservaSchema = z
     .object({
       fecha: z
@@ -124,6 +127,7 @@ const Reserva: React.FC = () => {
     resolver: zodResolver(reservaSchema),
   });
 
+  // Función para manejar el envío del formulario de reserva
   const onSubmit: SubmitHandler<ReservaSchema> = async (data) => {
     const reservaData = {
       fecha: format(data.fecha, "yyyy-MM-dd"),
@@ -153,6 +157,7 @@ const Reserva: React.FC = () => {
     }
   };
 
+  // Función para manejar errores en el formulario
   const handleError = (errors: any) => {
     for (const error of Object.values(errors)) {
       toast.error((error as { message: string }).message);

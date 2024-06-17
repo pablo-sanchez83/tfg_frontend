@@ -4,9 +4,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import { Proveedor } from "./components/Auth/AuthContext";
 
+// Importación de layouts y componentes
 import GenericLayout from "@/assets/GenericLayout";
 import AccountLayout from "@/assets/AccountLayout";
-
 import Index from "./components/Index/Index";
 import Login from "./components/account/Cliente/Account";
 import CuentaEmpresa from "./components/account/Empresa/CuentaEmpresa";
@@ -15,6 +15,7 @@ import Reserva from "./components/Reserva/Reserva";
 import Perfil from "./components/Perfil/Perfil";
 import ErrorMissing from "./assets/404Error";
 
+// Creación del enrutador con las rutas y sus respectivos componentes y layouts
 const router = createBrowserRouter([
   {
     path: "/",
@@ -74,6 +75,7 @@ const router = createBrowserRouter([
   }
 ]);
 
+// Renderización de la aplicación en el elemento root del HTML
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Proveedor>

@@ -20,9 +20,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { Contexto } from "@/components/Auth/AuthContext";
 import env from "@/lib/env";
 
+// Componente principal para el login
 export default function Login() {
+  // Estado para el código de país
   const [countryCode, setCountryCode] = useState("34");
+  // Hook de navegación
   const navigate = useNavigate();
+  // Contexto de autenticación
   const context = useContext(Contexto);
 
   if (!context) {
@@ -31,8 +35,10 @@ export default function Login() {
 
   const { login } = context;
 
+  // Expresión regular para el número de teléfono
   const phoneRegex = /\d{7,10}$/;
 
+  // Esquema de validación para el registro
   const signUpSchema = z
     .object({
       username: z
@@ -51,6 +57,7 @@ export default function Login() {
       path: ["confirm_password"],
     });
 
+  // Hook para el formulario de registro
   const signUpForm = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -64,6 +71,7 @@ export default function Login() {
     },
   });
 
+  // Función para manejar el registro
   function onSignUp(values: z.infer<typeof signUpSchema>) {
     const formattedValues = {
       ...values,
@@ -85,11 +93,13 @@ export default function Login() {
       });
   }
 
+  // Esquema de validación para el login
   const loginSchema = z.object({
     email: z.string().email({ message: "Email inválido" }),
     password: z.string().max(50, { message: "Máximo 50 caracteres" }),
   });
 
+  // Hook para el formulario de login
   const loginForm = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -98,6 +108,7 @@ export default function Login() {
     },
   });
 
+  // Función para manejar el login
   const onLogin = (values: z.infer<typeof loginSchema>) => {
     axios
       .post<AuthResponse>(env.API_BASE_URL + env.endpoints.login, values)

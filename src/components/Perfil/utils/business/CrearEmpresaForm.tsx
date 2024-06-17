@@ -9,10 +9,12 @@ import { Button } from "@/components/ui/button";
 import { User } from "@/lib/interfaces";
 import env from "@/lib/env";
 
+// Esquema de validación para la creación de empresa
 const createEmpresaSchema = z.object({
   nombre: z.string().max(100),
 });
 
+// Componente del formulario para crear una empresa
 export default function CrearEmpresaForm({
   fetchEmpresa,
   user,
@@ -20,10 +22,12 @@ export default function CrearEmpresaForm({
   fetchEmpresa: () => void;
   user: User;
 }) {
+  // Inicialización del formulario con react-hook-form y zod
   const createEmpresaForm = useForm<z.infer<typeof createEmpresaSchema>>({
     resolver: zodResolver(createEmpresaSchema),
   });
 
+  // Manejar el envío del formulario
   const handleCreateEmpresa = async (
     data: z.infer<typeof createEmpresaSchema>,
   ) => {

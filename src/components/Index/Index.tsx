@@ -25,15 +25,21 @@ import {
 } from "@/components/ui/select";
 import env from "@/lib/env";
 
+// Componente principal para la página de inicio
 export default function Index() {
+  // Estado para almacenar los locales
   const [locales, setLocales] = useState<Locales[]>([]);
+  // Estado para almacenar las categorías culinarias
   const [categorias, setCategorias] = useState<Categoria_Culinaria[]>([]);
+  // Estado para almacenar la información del usuario
   const [usuario, setUsuario] = useState<User>();
+  // Estado para la categoría seleccionada
   const [categoriaSeleccionada, setCategoriaSeleccionada] =
     useState<string>("todas");
 
+  // Efecto para cargar datos iniciales
   useEffect(() => {
-    // Fetch locales
+    // Obtener locales
     axios
       .get<Locales[]>(env.API_BASE_URL + env.endpoints.locales)
       .then((res) => {
@@ -43,7 +49,7 @@ export default function Index() {
         console.error(err);
       });
 
-    // Fetch categorias culinarias
+    // Obtener categorías culinarias
     axios
       .get<Categoria_Culinaria[]>(
         env.API_BASE_URL + env.endpoints.categorias_culinarias
@@ -55,6 +61,7 @@ export default function Index() {
         console.error(err);
       });
 
+    // Obtener información del usuario
     axios.get<User>(
       env.API_BASE_URL + env.endpoints.mi_usuario,
       {
@@ -67,10 +74,12 @@ export default function Index() {
       })
   }, []);
 
+  // Manejar cambio de categoría
   const handleCategoriaChange = (value: string) => {
     setCategoriaSeleccionada(value);
   };
 
+  // Filtrar locales por categoría seleccionada
   const localesFiltrados =
     categoriaSeleccionada !== "todas"
       ? locales.filter(

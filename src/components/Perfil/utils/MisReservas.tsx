@@ -9,9 +9,11 @@ import { format } from "date-fns";
 import { MoreVertical } from "lucide-react";
 import env from "@/lib/env";
 
+// Componente para mostrar las reservas del usuario
 export default function MisReservas() {
     const [reservas, setReservas] = useState<Reservas[]>([]);
 
+    // Función para obtener las reservas del usuario
     const fetchReservas = async () => {
         try {
             const response = await axios.get(env.API_BASE_URL + env.endpoints.mis_reservas, {
@@ -27,6 +29,7 @@ export default function MisReservas() {
         fetchReservas();
     }, []);
 
+    // Función para manejar la eliminación de una reserva
     const handleEliminarReserva = async (id: number) => {
         try {
             await axios.patch(
@@ -41,7 +44,6 @@ export default function MisReservas() {
             });
             location.reload();
             fetchReservas();
-
         } catch (error) {
             console.error("Error deleting reserva:", error);
         }

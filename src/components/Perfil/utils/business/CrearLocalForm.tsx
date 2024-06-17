@@ -28,6 +28,7 @@ interface CreateLocalFormProps {
   fetchLocales: () => void;
 }
 
+// Esquema de validación para la creación de un local
 const createLocalSchema = z.object({
   nombre: z.string().max(100).nonempty({ message: "El nombre es requerido" }),
   direccion: z
@@ -52,11 +53,13 @@ const createLocalSchema = z.object({
     .nonempty({ message: "El teléfono es requerido" }),
 });
 
+// Componente del formulario para crear un local
 export default function CrearLocalForm({
   categorias,
   empresa,
   fetchLocales,
 }: CreateLocalFormProps) {
+  // Inicialización del formulario con react-hook-form y zod
   const createLocalForm = useForm<z.infer<typeof createLocalSchema>>({
     resolver: zodResolver(createLocalSchema),
     defaultValues: {
@@ -69,8 +72,10 @@ export default function CrearLocalForm({
     },
   });
 
+  // Manejar el envío del formulario
   const handleCreateLocal = async (data: z.infer<typeof createLocalSchema>) => {
     try {
+      // Crear el encargado del local
       const encargadoResponse = await axios.post(
         env.API_BASE_URL + env.endpoints.register,
         {
@@ -78,18 +83,19 @@ export default function CrearLocalForm({
           email: data.encargado_email,
           tel: data.encargado_tel,
           password:
-            empresa.nombre + data.encargado_username + new Date().getFullYear(), // Set a default password or prompt user to set one later
+            empresa.nombre + data.encargado_username + new Date().getFullYear(), // Establecer una contraseña predeterminada
           rol: 3,
         },
       );
       const encargado = encargadoResponse.data.user;
 
+      // Datos del local a crear
       const localData = {
         nombre: data.nombre,
         direccion: data.direccion,
-        categoria_culinaria: Number(data.categoria_culinaria_id), // Convertir a número aquí
+        categoria_culinaria: Number(data.categoria_culinaria_id), // Convertir a número
         empresa: empresa?.id,
-        usuario: encargado.id, // Asegúrate de pasar el ID del encargado creado
+        usuario: encargado.id, // Pasar el ID del encargado creado
       };
 
       await axios.post(
