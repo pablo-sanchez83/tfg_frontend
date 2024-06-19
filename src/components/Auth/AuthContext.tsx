@@ -44,7 +44,7 @@ export const Proveedor = ({ children }: { children: ReactNode }) => {
     });
     localStorage.removeItem(env.TOKEN_KEY);
     setIsLoggedIn(false);
-    window.location.reload();
+    window.location.href = "/";
   };
 
   return (
