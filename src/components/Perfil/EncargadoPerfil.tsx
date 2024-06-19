@@ -656,6 +656,7 @@ export default function EncargadoPerfil({ user }: { user: User }) {
           <Card className="max-h-[500px] overflow-auto">
             <CardHeader>
               <CardTitle>Fotos del Local</CardTitle>
+              <CardTitle className="text-xs text-orange-400">Intenta que la altura de las imagenes sea muy parecida</CardTitle>
             </CardHeader>
             <CardContent>
               <form onSubmit={fotoForm.handleSubmit(handleAddFoto)}>
